@@ -15,6 +15,17 @@ namespace GameEngine {
 			return false;
 		}
 	}
+	bool CollisionDetection::CheckRectangleIntersect(BoundingBox * _rect1, BoundingBox * _rect2)
+	{
+		if (_rect1->x + _rect1->w > _rect2->x && _rect1->x < _rect2->x + _rect2->w && _rect1->y + _rect1->h > _rect2->y && _rect1->y < _rect2->y + _rect2->h)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	bool CollisionDetection::test1(glm::vec4* _rect1, glm::vec4* _rect2) {
 		if (_rect1->x + _rect1->z >= _rect2->x) {
 			return true;
@@ -203,7 +214,8 @@ namespace GameEngine {
 			}
 		}
 	}
-	void CollisionDetection::correctPosition(BoundingBox* bb1, BoundingBox* bb2) {
+	bool CollisionDetection::correctPosition(BoundingBox* bb1, BoundingBox* bb2) {
+		BoundingBox temp1 = *bb1;
 		collisionResult result;
 		if (bb1->x + bb1->w > bb2->x && bb1->x < bb2->x + bb2->w) {
 			if (bb1->y < bb2->y && bb1->y + bb1->h + bb1->yv > bb2->y) {
@@ -315,6 +327,12 @@ namespace GameEngine {
 		else if (result.right) {
 			bb1->x = bb2->x + bb2->w;
 			bb1->xv = 0;
+		}
+		if (!(temp1.x == bb1->x && temp1.y == bb1->y)) {
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	bool CollisionDetection::isCheckRequired(BoundingBox* bb1, BoundingBox* bb2) {

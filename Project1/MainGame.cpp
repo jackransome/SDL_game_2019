@@ -45,11 +45,14 @@ void MainGame::initSystems() {
 	spriteBatch.init();
 	_fpsLimiter.init(_maxFPS);
 	_camera.setScreenShakeIntensity(10);
+	//initialising collections
 	projectiles.init(&spriteBatch);
 	walls.init(&spriteBatch);
+	wallTurrets.init(&spriteBatch, &projectiles);
+
+	//initialising the player
 	player.init(0, 0, &spriteBatch, &_camera);
 
-	projectiles.add(player.getBoundingBox()->x, player.getBoundingBox()->y, 10, 10, damageDrone);
 	walls.addWall(100, 100, 50, 100);
 	
 }
@@ -100,15 +103,26 @@ void MainGame::updateGame() {
 	player.handleInput(&_inputManager);
 	glm::vec2 mousePos = _inputManager.getMouseCoords();
 	glm::vec2 cameraPos = _camera.getPosition();
+	wallTurrets.target(player.getBoundingBox());
 	//_inputManager.setMouseCoords(mousePos.x - cameraPos.x, mousePos.y - cameraPos.y);
 	for (int i = 0; i < walls.getVectorSize(); i++) {
+		//player wall collision;
 		if (collisionDetection.isCheckRequired(player.getBoundingBox(), walls.getBoundingBox(i))){
 			collisionDetection.correctPosition(player.getBoundingBox(), walls.getBoundingBox(i));
 		}
+		//projectile wall collision;
 		for (int j = 0; j < projectiles.getVectorSize(); j++) {
 			if (collisionDetection.lineRectCollision(projectiles.getProjectile(j)->getPosition(), projectiles.getProjectile(j)->getLastPosition(), walls.getBoundingBox(i))) {
 				projectiles.remove(j);
 				j--;
+			}
+		}
+		//wallTurret wall collision
+		for (int j = 0; j < wallTurrets.getVectorSize(); j++) {
+			if (collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
+				if (collisionDetection.correctPosition(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
+					wallTurrets.setToStatic(j);
+				}
 			}
 		}
 	}
@@ -117,6 +131,7 @@ void MainGame::updateGame() {
 
 	player.calcNewPos();
 	projectiles.run();
+	wallTurrets.update();
 
 }
 //Processes input with SDL
@@ -156,10 +171,12 @@ void MainGame::processInput() {
         }
     }
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT) && !_inputManager.lastMouseL) {
-		projectiles.launch(glm::vec2(player.getBoundingBox()->x + player.getBoundingBox()->w / 2, player.getBoundingBox()->y + player.getBoundingBox()->h / 2), _inputManager.getMouseCoords(), 10, damageDrone);
-		printf("2 x: %f, y: %f\n", _inputManager.getMouseCoords().x, _inputManager.getMouseCoords().y);
-		printf("player is at %f, %f \n", player.getBoundingBox()->x, player.getBoundingBox()->y);
+		projectiles.launch(glm::vec2(player.getBoundingBox()->x + player.getBoundingBox()->w / 2, player.getBoundingBox()->y + player.getBoundingBox()->h / 2), _inputManager.getMouseCoords(), 10, damageEnemy);
 	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT) && !_inputManager.lastMouseR) {
+		wallTurrets.launch(glm::vec2(player.getBoundingBox()->x + player.getBoundingBox()->w / 2, player.getBoundingBox()->y + player.getBoundingBox()->h / 2), _inputManager.getMouseCoords(), 10);
+	}
+	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
 	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
 }
 
@@ -200,6 +217,7 @@ void MainGame::drawGame() {
 	player.draw();
 	walls.draw();
 	projectiles.draw();
+	wallTurrets.draw();
 
 	spriteBatch.end();
 	

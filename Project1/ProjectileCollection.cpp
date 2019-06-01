@@ -18,6 +18,7 @@ void ProjectileCollection::add(float _x, float _y, float _xVel, float _yVel, Dam
 {
 	projectileVector.push_back(new Projectile());
 	projectileVector[projectileVector.size() - 1]->init(sb, _x, _y, _xVel, _yVel, _damageType);
+
 }
 
 void ProjectileCollection::draw()

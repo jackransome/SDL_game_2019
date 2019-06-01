@@ -19,6 +19,8 @@
 #include "Player.h"
 #include "WallCollection.h"
 #include "ProjectileCollection.h"
+#include "WallTurretCollection.h"
+
 enum class GameState {PLAY, EXIT};
 
 //Our example game class, just for testing purposes right now
@@ -36,6 +38,8 @@ private:
 	ProjectileCollection projectiles;
 
 	WallCollection walls;
+
+	WallTurretCollection wallTurrets;
 
 	GameEngine::CollisionDetection collisionDetection;
     void initSystems();

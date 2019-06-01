@@ -2,7 +2,7 @@
 
 #include <GameEngine\SpriteBatch.h>
 
-enum DamageType { damagePlayer, damageDrone };
+enum DamageType { damageFriendly, damageEnemy};
 
 class Projectile {
 public:
@@ -18,6 +18,8 @@ public:
 	bool toDelete;
 	void setPosition(glm::vec2 _position);
 private:
+	int lifeSpan;
+	int lifeCounter;
 	DamageType damageType;
 	glm::vec2 position;
 	glm::vec2 velocity;

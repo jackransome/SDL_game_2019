@@ -19,6 +19,9 @@ void Projectile::init(GameEngine::SpriteBatch* _sb, float _x, float _y, float _x
 	drawPosition = lastPosition;
 	sb = _sb;
 	damageType = _damageType;
+	lifeSpan = 100;
+	lifeCounter = 0;
+	toDelete = false;
 }
 
 void Projectile::calcNewPos()
@@ -29,6 +32,10 @@ void Projectile::calcNewPos()
 }
 void Projectile::run()
 {
+	lifeCounter++;
+	if (lifeCounter == lifeSpan) {
+		toDelete = true;
+	}
 	drawPosition = lastPosition;
 	lastPosition = position;
 	calcNewPos();

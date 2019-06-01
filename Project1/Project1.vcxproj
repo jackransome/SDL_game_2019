@@ -25,6 +25,8 @@
     <ClInclude Include="ProjectileCollection.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="WallCollection.h" />
+    <ClInclude Include="WallTurret.h" />
+    <ClInclude Include="WallTurretCollection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -34,6 +36,8 @@
     <ClCompile Include="ProjectileCollection.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WallCollection.cpp" />
+    <ClCompile Include="WallTurret.cpp" />
+    <ClCompile Include="WallTurretCollection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\colorShading.frag" />

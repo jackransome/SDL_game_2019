@@ -36,6 +36,12 @@
     <ClInclude Include="ProjectileCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WallTurret.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WallTurretCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,6 +63,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProjectileCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WallTurret.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WallTurretCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
