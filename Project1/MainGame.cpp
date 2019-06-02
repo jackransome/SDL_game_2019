@@ -9,6 +9,7 @@
 
 #include "MainGame.h"
 
+
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
 	_screenWidth(800),
@@ -52,12 +53,26 @@ void MainGame::initSystems() {
 	wallTurrets.init(&spriteBatch, &projectiles);
 	enemyDrones.init(&spriteBatch, &projectiles);
 
+	pathFinding.init(&spriteBatch);
+
 	//initialising the player
-	player.init(0, 0, &spriteBatch, &_camera);
+	player.init(0, 0, &spriteBatch, &_camera, &projectiles, &wallTurrets);
 
 	walls.addWall(100, 0, 50, 200);
 	walls.addWall(200, 0, 50, 200);
 	walls.addWall(0, 250, 3500, 50);
+
+	
+	pathFinding.addNode(glm::vec2(0,0));
+	pathFinding.addNode(glm::vec2(200, 200));
+	pathFinding.addNode(glm::vec2(300, 300));
+	pathFinding.addNode(glm::vec2(400, 400));
+	pathFinding.addNode(glm::vec2(500, 500));
+	pathFinding.connectNodes(0, 1);
+	pathFinding.connectNodes(1, 2);
+	pathFinding.connectNodes(2, 3);
+	pathFinding.connectNodes(3, 4);
+	pathFinding.getPath(0, 4);
 
 }
 
@@ -101,10 +116,9 @@ void MainGame::gameLoop() {
 	}
 }
 void MainGame::updateGame() {
-	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
-	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
-	_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
+
 	player.handleInput(&_inputManager);
+
 	glm::vec2 mousePos = _inputManager.getMouseCoords();
 	glm::vec2 cameraPos = _camera.getPosition();
 	//_inputManager.setMouseCoords(mousePos.x - cameraPos.x, mousePos.y - cameraPos.y);
@@ -195,14 +209,14 @@ void MainGame::updateGame() {
 		}
 	}
 
-
-
-
 	player.calcNewPos();
 	projectiles.run();
 	wallTurrets.update();
 	enemyDrones.update();
 
+	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
+	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
+	_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
 }
 //Processes input with SDL
 void MainGame::processInput() {
@@ -215,6 +229,10 @@ void MainGame::processInput() {
 
 	glm::vec2 trueMouseCoords = _inputManager.getTrueMouseCoords();
 	_inputManager.setMouseCoords(trueMouseCoords.x + cameraPos.x - _screenWidth / 2, -(trueMouseCoords.y - cameraPos.y - _screenHeight / 2));
+
+	//_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
+	//_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
+	//_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
 
 	//Will keep looping until there are no more events to process
 	while (SDL_PollEvent(&evnt)) {
@@ -240,18 +258,10 @@ void MainGame::processInput() {
 			break;
 		}
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT) && !_inputManager.lastMouseL) {
-		projectiles.launch(glm::vec2(player.getBoundingBox()->x + player.getBoundingBox()->w / 2, player.getBoundingBox()->y + player.getBoundingBox()->h / 2), _inputManager.getMouseCoords(), 20, damageEnemy);
-	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT) && !_inputManager.lastMouseR) {
-		wallTurrets.launch(glm::vec2(player.getBoundingBox()->x + player.getBoundingBox()->w / 2, player.getBoundingBox()->y + player.getBoundingBox()->h / 2), _inputManager.getMouseCoords(), 10);
-	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE) && !_inputManager.lastMouseM) {
 		enemyDrones.addEnemyDrone(_inputManager.getMouseCoords());
 	}
-	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
-	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
-	_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
+
 }
 
 //Draws the game using the almighty OpenGL
@@ -303,6 +313,7 @@ void MainGame::drawGame() {
 		temp = wallTurrets.getCenter(i) + glm::vec2(0, 20);
 		drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
 	}
+	pathFinding.draw();
 
 	spriteBatch.end();
 

@@ -9,8 +9,10 @@ Player::Player()
 Player::~Player()
 {
 }
-void Player::init(float _x, float _y, GameEngine::SpriteBatch* _sb, GameEngine::Camera2D* _c) {
+void Player::init(float _x, float _y, GameEngine::SpriteBatch* _sb, GameEngine::Camera2D* _c, ProjectileCollection* _projectiles, WallTurretCollection* _wallTurrets) {
 	sb = _sb;
+	projectiles = _projectiles;
+	wallTurrets = _wallTurrets;
 	camera = _c;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
@@ -45,6 +47,13 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	if (abs(boundingBox.xv) + abs(boundingBox.yv) == 2) {
 		boundingBox.xv *= sqrt(0.5);
 		boundingBox.yv *= sqrt(0.5);
+	}
+
+	if (_im->isKeyPressed(SDL_BUTTON_LEFT) && !_im->lastMouseL) {
+		projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 20, damageEnemy);
+	}
+	if (_im->isKeyPressed(SDL_BUTTON_RIGHT) && !_im->lastMouseR) {
+		wallTurrets->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 10);
 	}
 
 	boundingBox.yv *= speed;

@@ -22,6 +22,7 @@
 #include "ProjectileCollection.h"
 #include "WallTurretCollection.h"
 #include "EnemyDroneCollection.h"
+#include "PathFinding.h"
 
 enum class GameState { PLAY, EXIT };
 
@@ -44,6 +45,8 @@ private:
 	WallTurretCollection wallTurrets;
 
 	EnemyDroneCollection enemyDrones;
+
+	PathFinding pathFinding;
 
 	GameEngine::CollisionDetection collisionDetection;
 	void initSystems();

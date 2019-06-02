@@ -22,6 +22,7 @@
     <ClInclude Include="EnemyDrone.h" />
     <ClInclude Include="EnemyDroneCollection.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="PathFinding.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileCollection.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="EnemyDroneCollection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="PathFinding.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileCollection.cpp" />
