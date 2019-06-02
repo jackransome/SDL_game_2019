@@ -55,6 +55,18 @@ void Player::calcNewPos() {
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
 }
+float Player::getHealth()
+{
+	return health;
+}
+void Player::changeHealth(float _amount)
+{
+	health += _amount;
+}
+glm::vec2 Player::getCenter()
+{
+	return glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2);
+}
 void Player::draw() {
 	mainSprite.run();
 	mainSprite.draw(boundingBox.x, boundingBox.y);

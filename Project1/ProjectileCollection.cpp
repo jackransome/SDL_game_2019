@@ -17,7 +17,7 @@ void ProjectileCollection::init(GameEngine::SpriteBatch * _sb)
 void ProjectileCollection::add(float _x, float _y, float _xVel, float _yVel, DamageType _damageType)
 {
 	projectileVector.push_back(new Projectile());
-	projectileVector[projectileVector.size() - 1]->init(sb, _x, _y, _xVel, _yVel, _damageType);
+	projectileVector[projectileVector.size() - 1]->init(sb, _x, _y, _xVel, _yVel, _damageType, 1);
 
 }
 
@@ -33,6 +33,16 @@ void ProjectileCollection::run()
 	for (int i = 0; i < projectileVector.size(); i++) {
 		projectileVector[i]->run();
 	}
+}
+
+float ProjectileCollection::getDamage(int _index)
+{
+	return projectileVector[_index]->getDamage();
+}
+
+DamageType ProjectileCollection::getDamageType(int _index)
+{
+	return projectileVector[_index]->getDamageType();
 }
 
 void ProjectileCollection::remove(int _index)

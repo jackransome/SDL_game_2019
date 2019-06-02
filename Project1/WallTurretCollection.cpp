@@ -22,7 +22,7 @@ void WallTurretCollection::addWallTurret(glm::vec2 _position, glm::vec2 _velocit
 
 void WallTurretCollection::launch(glm::vec2 _p1, glm::vec2 _p2, float _vel)
 {
-	
+
 	float xVel;
 	float yVel;
 	float theta = atan(-1 * (_p1.y - _p2.y) / (_p1.x - _p2.x));
@@ -44,7 +44,16 @@ void WallTurretCollection::update()
 		if (wallTurretVector[i]->getIsStatic()) {
 			wallTurretVector[i]->run();
 		}
+		if (wallTurretVector[i]->getHealth() <= 0) {
+			remove(i);
+			i--;
+		}
 	}
+}
+
+void WallTurretCollection::remove(int _index)
+{
+	wallTurretVector.erase(wallTurretVector.begin() + _index);
 }
 
 void WallTurretCollection::setToStatic(int index)
@@ -59,14 +68,40 @@ void WallTurretCollection::draw()
 	}
 }
 
+void WallTurretCollection::changeHealth(int _index, int _amount)
+{
+	wallTurretVector[_index]->changeHealth(_amount);
+}
+
 BoundingBox * WallTurretCollection::getBoundingBox(int _index)
 {
 	return wallTurretVector[_index]->getBoundingBox();
 }
 
-void WallTurretCollection::target(BoundingBox* _boundingBox)
+void WallTurretCollection::clearTargets()
 {
 	for (int i = 0; i < wallTurretVector.size(); i++) {
-		wallTurretVector[i]->setTarget(_boundingBox);
+		wallTurretVector[i]->setTarget(NULL);
+	}
+}
+
+glm::vec2 WallTurretCollection::getPosition(int _index)
+{
+	BoundingBox temp = *wallTurretVector[_index]->getBoundingBox();
+	return glm::vec2(temp.x, temp.y);
+}
+
+glm::vec2 WallTurretCollection::getCenter(int _index)
+{
+	BoundingBox temp = *wallTurretVector[_index]->getBoundingBox();
+	return glm::vec2(temp.x + temp.w / 2, temp.y + temp.h / 2);
+}
+
+void WallTurretCollection::target(int _index, BoundingBox* _boundingBox)
+{
+	//if old target is null new target is closer that old target
+	if (!wallTurretVector[_index]->getTarget() || sqrt(pow(_boundingBox->x - wallTurretVector[_index]->getBoundingBox()->x, 2) + pow(_boundingBox->y - wallTurretVector[_index]->getBoundingBox()->y, 2)) < sqrt(pow(wallTurretVector[_index]->getTarget()->x - wallTurretVector[_index]->getBoundingBox()->x, 2) + pow(wallTurretVector[_index]->getTarget()->y - wallTurretVector[_index]->getBoundingBox()->y, 2))) {
+		//set this turrets target to the new one
+		wallTurretVector[_index]->setTarget(_boundingBox);
 	}
 }

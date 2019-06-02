@@ -18,32 +18,41 @@ void WallTurret::init(glm::vec2 _position, glm::vec2 _velocity, GameEngine::Spri
 	boundingBox.h = 16;
 	boundingBox.xv = _velocity.x;
 	boundingBox.yv = _velocity.y;
-	projectileSpeed = 6;
+	projectileSpeed = 20;
 	isStatic = false;
 	movingSprite.init(sb, 8, 8, 2, 4, 8, 0, 0);
 	movingSprite.loadTexture("textures/wallTurretMoving.png");
 	staticSprite.init(sb, 8, 8, 2, 2, 32, 0, 0);
 	staticSprite.loadTexture("textures/wallTurretStatic.png");
+	shootingSprite.init(sb, 8, 8, 2, 2, 8, 0, 0);
+	shootingSprite.loadTexture("textures/wallTurretShooting.png");
 	shootCoolDown = 0;
+	health = 10;
 }
 
 void WallTurret::run()
 {
-	if (shootCoolDown == 0) {
+	if (shootCoolDown == 0 && target) {
 		shootAt(*target);
 		shootCoolDown = 20;
 	}
 	if (shootCoolDown > 0) {
 		shootCoolDown--;
 	}
-	
+
 }
 
 void WallTurret::draw()
 {
 	if (isStatic) {
-		staticSprite.run();
-		staticSprite.draw(boundingBox.x, boundingBox.y);
+		if (target) {
+			shootingSprite.run();
+			shootingSprite.draw(boundingBox.x, boundingBox.y);
+		}
+		else {
+			staticSprite.run();
+			staticSprite.draw(boundingBox.x, boundingBox.y);
+		}
 	}
 	else {
 		movingSprite.run();
@@ -68,9 +77,27 @@ void WallTurret::setToStatic()
 	boundingBox.xv = boundingBox.yv = 0;
 }
 
+float WallTurret::getHealth()
+{
+	return health;
+}
+
+void WallTurret::changeHealth(float _amount)
+{
+	health += _amount;
+}
+
 BoundingBox * WallTurret::getBoundingBox()
 {
 	return &boundingBox;
+}
+
+BoundingBox * WallTurret::getTarget()
+{
+	if (!target) {
+		return NULL;
+	}
+	return target;
 }
 
 void WallTurret::setTarget(BoundingBox * _boundingBox)
@@ -80,5 +107,5 @@ void WallTurret::setTarget(BoundingBox * _boundingBox)
 
 void WallTurret::shootAt(BoundingBox _boundingBox)
 {
-	projectiles->launch(glm::vec2(boundingBox.x, boundingBox.y), glm::vec2(_boundingBox.x  + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageEnemy);
+	projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), glm::vec2(_boundingBox.x + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageEnemy);
 }

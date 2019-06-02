@@ -14,23 +14,25 @@
 #include <GameEngine/CollisionDetection.h>
 #include <GameEngine/SpriteBatch.h>
 #include <GameEngine/Camera2D.h>
-
+#include <GameEngine/DrawText.h>
 #include <GameEngine\DrawText.h>
+
 #include "Player.h"
 #include "WallCollection.h"
 #include "ProjectileCollection.h"
 #include "WallTurretCollection.h"
+#include "EnemyDroneCollection.h"
 
-enum class GameState {PLAY, EXIT};
+enum class GameState { PLAY, EXIT };
 
 //Our example game class, just for testing purposes right now
 class MainGame
 {
 public:
-    MainGame();
-    ~MainGame();
+	MainGame();
+	~MainGame();
 
-    void run();
+	void run();
 private:
 
 	Player player;
@@ -41,30 +43,33 @@ private:
 
 	WallTurretCollection wallTurrets;
 
+	EnemyDroneCollection enemyDrones;
+
 	GameEngine::CollisionDetection collisionDetection;
-    void initSystems();
-    void initShaders();
-    void gameLoop();
-    void processInput();
-    void drawGame();
+	void initSystems();
+	void initShaders();
+	void gameLoop();
+	void processInput();
+	void drawGame();
 	void updateGame();
-    GameEngine::Window _window;
-    int _screenWidth;
-    int _screenHeight;
-    GameState _gameState;
+	GameEngine::Window _window;
+	int _screenWidth;
+	int _screenHeight;
+	GameState _gameState;
 
-    GameEngine::GLSLProgram _colorProgram;
-    GameEngine::Camera2D _camera;
+	GameEngine::GLSLProgram _colorProgram;
+	GameEngine::Camera2D _camera;
 
-    GameEngine::SpriteBatch spriteBatch;
+	GameEngine::SpriteBatch spriteBatch;
 
-    GameEngine::InputManager _inputManager;
-    GameEngine::FpsLimiter _fpsLimiter;
-    
-    float _maxFPS;
-    float _fps;
-    float _time;
+	GameEngine::DrawText drawText;
+
+	GameEngine::InputManager _inputManager;
+	GameEngine::FpsLimiter _fpsLimiter;
+
+	float _maxFPS;
+	float _fps;
+	float _time;
 	bool lastPressedL = false;
 	bool lastPressedR = false;
-	GameEngine::DrawText drawText;
 };

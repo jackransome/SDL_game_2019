@@ -15,6 +15,9 @@ public:
 	BoundingBox* getBoundingBox();
 	void handleInput(GameEngine::InputManager* _im);
 	void calcNewPos();
+	float getHealth();
+	void changeHealth(float _amount);
+	glm::vec2 getCenter();
 	void draw();
 private:
 	GameEngine::Camera2D* camera;
