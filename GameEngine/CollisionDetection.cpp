@@ -4,6 +4,13 @@ struct collisionResult { collisionResult() : left(false), right(false), top(fals
 namespace GameEngine {
 	CollisionDetection::CollisionDetection() {}
 	CollisionDetection::~CollisionDetection() {}
+	bool CollisionDetection::pointRectangleIntersect(glm::vec2 _point, BoundingBox * _boundingBox)
+	{
+		if (_point.x > _boundingBox->x && _point.x < _boundingBox->x + _boundingBox->w && _point.y > _boundingBox->y && _point.y < _boundingBox->y + _boundingBox->h) {
+			return true;
+		}
+		return false;
+	}
 	bool CollisionDetection::CheckRectangleIntersect(glm::vec4* _rect1, glm::vec4* _rect2)
 	{
 		if (_rect1->x + _rect1->z > _rect2->x && _rect1->x < _rect2->x + _rect2->z && _rect1->y + _rect1->w > _rect2->y && _rect1->y < _rect2->y + _rect2->w)

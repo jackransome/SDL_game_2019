@@ -18,6 +18,76 @@ void PathFinding::connectNodes(int _index1, int _index2)
 	nodes[_index2]->neighbors.push_back(nodes[_index1]);
 }
 
+void PathFinding::disconnectNodes(int _index1, int _index2)
+{
+	//go through index1 and find index 2
+	for (int i = 0; i < nodes[_index1]->neighbors.size(); i++) {
+		if (nodes[_index1]->neighbors[i] == nodes[_index2]) {
+			nodes[_index1]->neighbors.erase(nodes[_index1]->neighbors.begin() + i);
+			break;
+		}
+	}
+	//go through index2 and find index 1
+	for (int i = 0; i < nodes[_index2]->neighbors.size(); i++) {
+		if (nodes[_index2]->neighbors[i] == nodes[_index1]) {
+			nodes[_index2]->neighbors.erase(nodes[_index2]->neighbors.begin() + i);
+			break;
+		}
+	}
+}
+
+void PathFinding::optimiseNetwork()
+{
+	for (int i = 0; i < nodes.size(); i++) {
+		for (int j = 0; j < i; j++) {
+			for (int k = 0; k < j; k++) {
+				if (isConnectedTo(i, j) && isConnectedTo(j, k) && isConnectedTo(k, i)) {
+					float lengthij = sqrt(pow(nodes[i]->position.x - nodes[j]->position.x, 2) + pow(nodes[i]->position.y - nodes[j]->position.y, 2));
+					float lengthjk = sqrt(pow(nodes[j]->position.x - nodes[k]->position.x, 2) + pow(nodes[j]->position.y - nodes[k]->position.y, 2));
+					float lengthki = sqrt(pow(nodes[k]->position.x - nodes[i]->position.x, 2) + pow(nodes[k]->position.y - nodes[i]->position.y, 2));
+					if (lengthij > lengthjk + lengthki) {
+						disconnectNodes(i, j);
+					}
+					else if (lengthjk > lengthki + lengthij) {
+						disconnectNodes(j, k);
+					}
+					else if (lengthki > lengthij + lengthjk) {
+						disconnectNodes(k, i);
+					}
+					else {
+						if (lengthij > lengthjk) {
+							if (lengthij > lengthki) {
+								disconnectNodes(i, j);
+							}
+							else {
+								disconnectNodes(k, i);
+							}
+						}
+						else {
+							if (lengthjk > lengthki) {
+								disconnectNodes(j, k);
+							}
+							else {
+								disconnectNodes(k, i);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+bool PathFinding::isConnectedTo(int _index1, int _index2)
+{
+	for (int i = 0; i < nodes[_index1]->neighbors.size(); i++) {
+		if (nodes[_index1]->neighbors[i] == nodes[_index2]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void PathFinding::draw()
 {
 	GameEngine::Color nodeColor;
@@ -93,5 +163,10 @@ std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
 		printf("path: %f, %f\n", path[i].x, path[i].y);
 	}
 	return path;
+}
+
+glm::vec2 PathFinding::getPosition(int _index)
+{
+	return nodes[_index]->position;
 }
 

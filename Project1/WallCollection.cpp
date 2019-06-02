@@ -15,6 +15,10 @@ void WallCollection::draw() {
 		wallVector[i]->draw(sb);
 	}
 }
+void WallCollection::remove(int _index)
+{
+	wallVector.erase(wallVector.begin() + _index);
+}
 BoundingBox* WallCollection::getBoundingBox(int _index) {
 	return wallVector[_index]->getBoundingBox();
 }

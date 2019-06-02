@@ -36,7 +36,7 @@ void MainGame::run() {
 }
 //Initialize SDL and Opengl and whatever else we need
 void MainGame::initSystems() {
-
+	srand(time(NULL));
 	GameEngine::init();
 
 	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
@@ -46,7 +46,7 @@ void MainGame::initSystems() {
 	spriteBatch.init();
 	drawText.init(&spriteBatch);
 	_fpsLimiter.init(_maxFPS);
-	_camera.setScreenShakeIntensity(10);
+	_camera.setScreenShakeIntensity(0);
 	//initialising collections
 	projectiles.init(&spriteBatch);
 	walls.init(&spriteBatch);
@@ -58,21 +58,95 @@ void MainGame::initSystems() {
 	//initialising the player
 	player.init(0, 0, &spriteBatch, &_camera, &projectiles, &wallTurrets);
 
-	walls.addWall(100, 0, 50, 200);
-	walls.addWall(200, 0, 50, 200);
-	walls.addWall(0, 250, 3500, 50);
+	bool collides = false;
+
+	bool random = true;
+	int amountOfWalls = 50;
+	if (!random) {
+		walls.addWall(100, 0, 50, 200);
+		walls.addWall(200, 0, 50, 200);
+		walls.addWall(0, 250, 3500, 50);
+	}
+	else {
+		int numberOfWalls = 0;
+		while (walls.getVectorSize() < amountOfWalls) {
+			walls.addWall(rand() % 1000 - 500, rand() % 1000 - 500, rand() % 200 + 50, rand() % 200 + 50);
+			for (int i = 0; i < walls.getVectorSize()-1; i++) {
+				if (collisionDetection.CheckRectangleIntersect(walls.getBoundingBox(walls.getVectorSize() - 1), walls.getBoundingBox(i))) {
+					walls.remove(walls.getVectorSize() - 1);
+				}
+			}
+		}
+	}
+
+
+
 
 	
-	pathFinding.addNode(glm::vec2(0,0));
-	pathFinding.addNode(glm::vec2(200, 200));
-	pathFinding.addNode(glm::vec2(300, 300));
-	pathFinding.addNode(glm::vec2(400, 400));
-	pathFinding.addNode(glm::vec2(500, 500));
-	pathFinding.connectNodes(0, 1);
-	pathFinding.connectNodes(1, 2);
-	pathFinding.connectNodes(2, 3);
-	pathFinding.connectNodes(3, 4);
-	pathFinding.getPath(0, 4);
+	for (int i = 0; i < walls.getVectorSize(); i++) {
+		BoundingBox* temp = walls.getBoundingBox(i);
+		for (int j = 0; j < walls.getVectorSize(); j++) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y - 10), walls.getBoundingBox(j))) {
+				collides = true;
+			}
+		}
+		if (!collides) {
+			pathFinding.addNode(glm::vec2(temp->x - 10, temp->y - 10));
+		}
+		collides = false;
+		for (int j = 0; j < walls.getVectorSize(); j++) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y + temp->h + 10), walls.getBoundingBox(j))) {
+				collides = true;
+			}
+		}
+		if (!collides) {
+			pathFinding.addNode(glm::vec2(temp->x - 10, temp->y + temp->h + 10));
+		}
+		collides = false;
+		for (int j = 0; j < walls.getVectorSize(); j++) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 10, temp->y + temp->h + 10), walls.getBoundingBox(j))) {
+				collides = true;
+			}
+		}
+		if (!collides) {
+			pathFinding.addNode(glm::vec2(temp->x + temp->w + 10, temp->y + temp->h + 10));
+		}
+		collides = false;
+		for (int j = 0; j < walls.getVectorSize(); j++) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 10, temp->y - 10), walls.getBoundingBox(j))) {
+				collides = true;
+			}
+		}
+		if (!collides) {
+			pathFinding.addNode(glm::vec2(temp->x + temp->w + 10, temp->y - 10));
+		}
+		
+	}
+	//connecting nodes that can reach each other
+	
+	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
+		for (int j = i; j < pathFinding.getVectorSize(); j++) {
+			collides = false;
+			for (int k = 0; k < walls.getVectorSize(); k++) {
+				if (i != j) {
+					glm::vec2 temp1 = pathFinding.getPosition(i);
+					glm::vec2 temp2 = pathFinding.getPosition(j);
+					BoundingBox* temp3 = walls.getBoundingBox(k);
+					bool result = collisionDetection.lineRectCollision(temp1, temp2, walls.getBoundingBox(k));
+					if (result) {
+						collides = true;
+						break;
+					}
+				}
+			}
+			if (!collides) {
+				pathFinding.connectNodes(i, j);
+			}
+		}
+	}
+	pathFinding.optimiseNetwork();
+	
+	//pathFinding.getPath(0, 4);
 
 }
 
@@ -298,6 +372,8 @@ void MainGame::drawGame() {
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	spriteBatch.begin();
 
+	pathFinding.draw();
+
 	player.draw();
 	walls.draw();
 	projectiles.draw();
@@ -306,14 +382,18 @@ void MainGame::drawGame() {
 
 	glm::vec2 temp;
 	for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
-		temp = enemyDrones.getCenter(i) + glm::vec2(0, 20);
-		drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
+		//temp = enemyDrones.getCenter(i) + glm::vec2(0, 20);
+		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
 	}
 	for (int i = 0; i < wallTurrets.getVectorSize(); i++) {
-		temp = wallTurrets.getCenter(i) + glm::vec2(0, 20);
+		//temp = wallTurrets.getCenter(i) + glm::vec2(0, 20);
+		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
+	}
+	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
+		temp = pathFinding.getPosition(i) + glm::vec2(0, 20);
 		drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
 	}
-	pathFinding.draw();
+	
 
 	spriteBatch.end();
 

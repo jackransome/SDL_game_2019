@@ -10,6 +10,7 @@ namespace GameEngine {
 	public:
 		CollisionDetection();
 		~CollisionDetection();
+		bool pointRectangleIntersect(glm::vec2 _point, BoundingBox* _boundingBox);
 		bool CheckRectangleIntersect(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool CheckRectangleIntersect(BoundingBox* _rect1, BoundingBox* _rect2);
 		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2);

@@ -1,8 +1,9 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (PathFinding.vcxproj, Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  PathFinding.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(31): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(33): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(46): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(59): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(92): warning C4018: '<': signed/unsigned mismatch
+  MainGame.cpp
+c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(39): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(172): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(270): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(279): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(319): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
   Project1.vcxproj -> C:\Users\Jack\Documents\GitHub\SDL_game_2019\Debug\Game.exe

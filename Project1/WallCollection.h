@@ -12,6 +12,7 @@ public:
 	void init(GameEngine::SpriteBatch* _sb);
 	void addWall(float _x, float _y, float _width, float _height);
 	void draw();
+	void remove(int index);
 	BoundingBox* getBoundingBox(int _index);
 	int getVectorSize() { return wallVector.size(); }
 private:
