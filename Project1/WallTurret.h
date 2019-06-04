@@ -20,12 +20,15 @@ public:
 	void setToStatic();
 	float getHealth();
 	void changeHealth(float _amount);
+	float getSensorRange();
 	BoundingBox* getBoundingBox();
 	BoundingBox* getTarget();
 	void setTarget(BoundingBox* _boundingBox);
 
 private:
 
+	int sensorRange;
+	int maxShootDown;
 	int shootCoolDown;
 	void shootAt(BoundingBox _boundingBox);
 	BoundingBox* target;

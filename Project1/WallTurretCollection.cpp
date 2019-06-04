@@ -78,6 +78,16 @@ BoundingBox * WallTurretCollection::getBoundingBox(int _index)
 	return wallTurretVector[_index]->getBoundingBox();
 }
 
+bool WallTurretCollection::getStatic(int _index)
+{
+	return wallTurretVector[_index]->getIsStatic();
+}
+
+float WallTurretCollection::getSensorRange(int _index)
+{
+	return wallTurretVector[_index]->getSensorRange();
+}
+
 void WallTurretCollection::clearTargets()
 {
 	for (int i = 0; i < wallTurretVector.size(); i++) {

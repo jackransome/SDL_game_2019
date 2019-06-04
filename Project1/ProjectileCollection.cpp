@@ -32,6 +32,10 @@ void ProjectileCollection::run()
 {
 	for (int i = 0; i < projectileVector.size(); i++) {
 		projectileVector[i]->run();
+		if (projectileVector[i]->toDelete) {
+			remove(i);
+			i--;
+		}
 	}
 }
 

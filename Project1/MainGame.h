@@ -23,6 +23,7 @@
 #include "WallTurretCollection.h"
 #include "EnemyDroneCollection.h"
 #include "PathFinding.h"
+#include "RandomGeneration.h"
 
 enum class GameState { PLAY, EXIT };
 
@@ -36,6 +37,12 @@ public:
 	void run();
 private:
 
+	int closestNodeToPlayerIndex;
+
+	bool playerNodeHasChanged;
+
+	std::vector<glm::vec2> tempPath;
+
 	Player player;
 
 	ProjectileCollection projectiles;
@@ -47,6 +54,8 @@ private:
 	EnemyDroneCollection enemyDrones;
 
 	PathFinding pathFinding;
+
+	RandomGeneration randomGeneration;
 
 	GameEngine::CollisionDetection collisionDetection;
 	void initSystems();

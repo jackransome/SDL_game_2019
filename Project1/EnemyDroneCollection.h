@@ -22,6 +22,10 @@ public:
 	void clearTargets();
 	glm::vec2 getPosition(int _index);
 	glm::vec2 getCenter(int _index);
+	bool hasTarget(int _index);
+	void setPath(int _index, std::vector<glm::vec2> _path);
+	bool hasPath(int _index);
+	float getSensorRange(int _index);
 private:
 	std::vector<EnemyDrone*> enemyDroneVector;
 	GameEngine::SpriteBatch* sb;

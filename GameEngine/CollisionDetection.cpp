@@ -355,8 +355,15 @@ namespace GameEngine {
 		} else { check = false; }
 		return check;
 	}
+	bool CollisionDetection::checkParallel(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4) {
+		if (((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)) == 0) {
+			return true;
+		}
+		return false;
+	}
 	glm::vec2 CollisionDetection::getLineIntersect(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4) {
 		if (((_p1.x - _p2.x)*(_p3.y - _p4.y) - (_p1.y - _p2.y)*(_p3.x - _p4.x)) == 0) {
+			//they're parallel
 			return glm::vec2(NULL, NULL);
 		}
 		else {
@@ -368,20 +375,42 @@ namespace GameEngine {
 		return sqrt(pow(_p2.x - _p1.x, 2) + pow(_p2.y - _p1.y,2));
 	}
 	bool CollisionDetection::lineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox) {
+		//checking to see if this check is needed
+		BoundingBox line;
+		if (_p1.x > _p2.x) {
+			line.x = _p2.x;
+			line.w = _p1.x - _p2.x;
+		} else {
+			line.x = _p1.x;
+			line.w = _p2.x - _p1.x;
+		}
+		if (_p1.y > _p2.y) {
+			line.y = _p2.y;
+			line.h = _p1.y - _p2.y;
+		}
+		else {
+			line.y = _p1.y;
+			line.h = _p2.y - _p1.y;
+		}
+		if (!CheckRectangleIntersect(&line, _boundingBox)) {
+			return false;
+		}
+
+		//doing the test
 		glm::vec2 left = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h));
 		glm::vec2 right = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->h));
 		glm::vec2 bottom = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y));
 		glm::vec2 top = getLineIntersect(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->h));
-		if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, left.y) && isBetween(_p1.x, _p2.x, left.x)) {
+		if (!checkParallel(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h)) && isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, left.y) && isBetween(_p1.x, _p2.x, left.x)) {
 			return true;
 		}
-		else if (isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, right.x)) {
+		else if (!checkParallel(_p1, _p2, glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->h)) && isBetween(_boundingBox->y, _boundingBox->h + _boundingBox->y, right.y) && isBetween(_p1.x, _p2.x, right.x)) {
 			return true;
 		}
-		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.y, _p2.y, top.y)) {
+		else if (!checkParallel(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y)) && isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, top.x) && isBetween(_p1.y, _p2.y, top.y)) {
 			return true;
 		}
-		else if (isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.y, _p2.y, bottom.y)) {
+		else if (!checkParallel(_p1, _p2, glm::vec2(_boundingBox->x, _boundingBox->y + _boundingBox->h), glm::vec2(_boundingBox->x + _boundingBox->w, _boundingBox->y + _boundingBox->h)) && isBetween(_boundingBox->x, _boundingBox->w + _boundingBox->x, bottom.x) && isBetween(_p1.y, _p2.y, bottom.y)) {
 			return true;
 		}
 		else { return false; }

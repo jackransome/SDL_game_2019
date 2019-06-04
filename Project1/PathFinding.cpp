@@ -159,8 +159,9 @@ std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
 		}
 	}
 	//printing the output
+	//printf("Path:");
 	for (int i = 0; i < path.size(); i++) {
-		printf("path: %f, %f\n", path[i].x, path[i].y);
+		//printf("i: %f, %f\n", path[i].x, path[i].y);
 	}
 	return path;
 }

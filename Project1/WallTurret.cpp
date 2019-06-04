@@ -27,19 +27,20 @@ void WallTurret::init(glm::vec2 _position, glm::vec2 _velocity, GameEngine::Spri
 	shootingSprite.init(sb, 8, 8, 2, 2, 8, 0, 0);
 	shootingSprite.loadTexture("textures/wallTurretShooting.png");
 	shootCoolDown = 0;
-	health = 10;
+	maxShootDown = 20;
+	sensorRange = 400;
+	health = 20;
 }
 
 void WallTurret::run()
 {
-	if (shootCoolDown == 0 && target) {
+	if (shootCoolDown == 0 && target && sqrt(pow(target->x - boundingBox.x, 2) + pow(target->y - boundingBox.y, 2)) < sensorRange) {
 		shootAt(*target);
-		shootCoolDown = 20;
+		shootCoolDown = maxShootDown;
 	}
 	if (shootCoolDown > 0) {
 		shootCoolDown--;
 	}
-
 }
 
 void WallTurret::draw()
@@ -85,6 +86,11 @@ float WallTurret::getHealth()
 void WallTurret::changeHealth(float _amount)
 {
 	health += _amount;
+}
+
+float WallTurret::getSensorRange()
+{
+	return sensorRange;
 }
 
 BoundingBox * WallTurret::getBoundingBox()

@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(800),
-	_screenHeight(800),
+	_screenWidth(1200),
+	_screenHeight(1000),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -52,76 +52,79 @@ void MainGame::initSystems() {
 	walls.init(&spriteBatch);
 	wallTurrets.init(&spriteBatch, &projectiles);
 	enemyDrones.init(&spriteBatch, &projectiles);
+	randomGeneration.init(&walls, &pathFinding, &collisionDetection);
 
 	pathFinding.init(&spriteBatch);
 
 	//initialising the player
 	player.init(0, 0, &spriteBatch, &_camera, &projectiles, &wallTurrets);
-
 	bool collides = false;
 
 	bool random = true;
-	int amountOfWalls = 50;
+	int amountOfWalls = 30;
 	if (!random) {
 		walls.addWall(100, 0, 50, 200);
 		walls.addWall(200, 0, 50, 200);
 		walls.addWall(0, 250, 3500, 50);
 	}
 	else {
-		int numberOfWalls = 0;
-		while (walls.getVectorSize() < amountOfWalls) {
+		//randomly generating walls
+		/*while (walls.getVectorSize() < amountOfWalls) {
 			walls.addWall(rand() % 1000 - 500, rand() % 1000 - 500, rand() % 200 + 50, rand() % 200 + 50);
 			for (int i = 0; i < walls.getVectorSize()-1; i++) {
-				if (collisionDetection.CheckRectangleIntersect(walls.getBoundingBox(walls.getVectorSize() - 1), walls.getBoundingBox(i))) {
+				BoundingBox temp1 = *walls.getBoundingBox(walls.getVectorSize() - 1);
+				temp1.x -= 32;
+				temp1.y -= 32;
+				temp1.w += 64;
+				temp1.h += 64;
+				if (collisionDetection.CheckRectangleIntersect(&temp1, walls.getBoundingBox(i))) {
 					walls.remove(walls.getVectorSize() - 1);
+					break;
 				}
 			}
-		}
+		}*/
+		randomGeneration.generate();
 	}
-
-
-
-
 	
-	for (int i = 0; i < walls.getVectorSize(); i++) {
+	/*for (int i = 0; i < walls.getVectorSize(); i++) {
 		BoundingBox* temp = walls.getBoundingBox(i);
 		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y - 10), walls.getBoundingBox(j))) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 20, temp->y - 20), walls.getBoundingBox(j))) {
 				collides = true;
 			}
 		}
 		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x - 10, temp->y - 10));
+			pathFinding.addNode(glm::vec2(temp->x - 20, temp->y - 20));
 		}
 		collides = false;
 		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y + temp->h + 10), walls.getBoundingBox(j))) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y + temp->h + 20), walls.getBoundingBox(j))) {
 				collides = true;
 			}
 		}
 		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x - 10, temp->y + temp->h + 10));
+			pathFinding.addNode(glm::vec2(temp->x - 20, temp->y + temp->h + 20));
 		}
 		collides = false;
 		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 10, temp->y + temp->h + 10), walls.getBoundingBox(j))) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 20, temp->y + temp->h + 20), walls.getBoundingBox(j))) {
 				collides = true;
 			}
 		}
 		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x + temp->w + 10, temp->y + temp->h + 10));
+			pathFinding.addNode(glm::vec2(temp->x + temp->w + 20, temp->y + temp->h + 20));
 		}
 		collides = false;
 		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 10, temp->y - 10), walls.getBoundingBox(j))) {
+			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 20, temp->y - 20), walls.getBoundingBox(j))) {
 				collides = true;
 			}
 		}
 		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x + temp->w + 10, temp->y - 10));
+			pathFinding.addNode(glm::vec2(temp->x + temp->w + 20, temp->y - 20));
 		}
 		
-	}
+	}*/
 	//connecting nodes that can reach each other
 	
 	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
@@ -144,10 +147,8 @@ void MainGame::initSystems() {
 			}
 		}
 	}
-	pathFinding.optimiseNetwork();
-	
-	//pathFinding.getPath(0, 4);
-
+	//pathFinding.optimiseNetwork();
+	int x = 0;
 }
 
 void MainGame::initShaders() {
@@ -195,7 +196,34 @@ void MainGame::updateGame() {
 
 	glm::vec2 mousePos = _inputManager.getMouseCoords();
 	glm::vec2 cameraPos = _camera.getPosition();
-	//_inputManager.setMouseCoords(mousePos.x - cameraPos.x, mousePos.y - cameraPos.y);
+
+	//get closest node to player that the player can see
+	float minDistance = 1000000;
+	int index = -1;
+	float dist;
+	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
+		for (int j = 0; j < walls.getVectorSize(); j++) {
+			bool result = collisionDetection.lineRectCollision(player.getCenter(), pathFinding.getPosition(i), walls.getBoundingBox(j));
+			if (!result) {
+				dist = collisionDetection.getDistance(player.getCenter(), pathFinding.getPosition(i));
+				if (dist < minDistance) {
+					index = i;
+					minDistance = dist;
+				}
+			}
+		}
+	}
+	if (closestNodeToPlayerIndex != index) {
+		closestNodeToPlayerIndex = index;
+		playerNodeHasChanged = true;
+	}
+	else {
+		playerNodeHasChanged = false;
+	}
+	
+
+	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex);
+
 	for (int i = 0; i < walls.getVectorSize(); i++) {
 		//player wall collision;
 		if (collisionDetection.isCheckRequired(player.getBoundingBox(), walls.getBoundingBox(i))) {
@@ -210,8 +238,8 @@ void MainGame::updateGame() {
 		}
 		//wallTurret wall collision
 		for (int j = 0; j < wallTurrets.getVectorSize(); j++) {
-			if (collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
-				if (collisionDetection.correctPosition(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
+			if (!wallTurrets.getStatic(j) && collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
+				if (collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i)) && collisionDetection.correctPosition(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
 					wallTurrets.setToStatic(j);
 				}
 			}
@@ -236,9 +264,11 @@ void MainGame::updateGame() {
 					break;
 				}
 			}
-			if (!isBlocked) {
-				wallTurrets.target(i, enemyDrones.getBoundingBox(j));
+			if (!isBlocked && sqrt(pow(enemyDrones.getCenter(j).x - wallTurrets.getCenter(i).x, 2) + pow(enemyDrones.getCenter(j).y - wallTurrets.getCenter(i).y, 2)) < enemyDrones.getSensorRange(j)) {
 				enemyDrones.target(j, wallTurrets.getBoundingBox(i));
+			}
+			if (!isBlocked && sqrt(pow(wallTurrets.getCenter(i).x - enemyDrones.getCenter(j).x, 2) + pow(wallTurrets.getCenter(i).y - enemyDrones.getCenter(j).y, 2)) < wallTurrets.getSensorRange(i)) {
+				wallTurrets.target(i, enemyDrones.getBoundingBox(j));
 			}
 		}
 	}
@@ -252,10 +282,41 @@ void MainGame::updateGame() {
 				break;
 			}
 		}
-		if (!isBlocked) {
+		//if isn't blocked and if within sensor range
+		if (!isBlocked && sqrt(pow(enemyDrones.getCenter(i).x - player.getCenter().x, 2) + pow(enemyDrones.getCenter(i).y - player.getCenter().y, 2)) < enemyDrones.getSensorRange(i)) {
 			enemyDrones.target(i, player.getBoundingBox());
 		}
+		//if a drone doesn't have a path or the path to the player has changed
+		else if ((!enemyDrones.hasPath(i) || playerNodeHasChanged) && !enemyDrones.hasTarget(i)) {
+			//slow
+			float minDistance = 1000000;
+			int index = -1;
+			float dist;
+			bool collided;
+			//getting the closest node to the drone that it can see
+			for (int j = 0; j < pathFinding.getVectorSize(); j++) {
+				collided = false;
+				for (int k = 0; k < walls.getVectorSize(); k++) {
+					bool result = collisionDetection.lineRectCollision(enemyDrones.getCenter(i), pathFinding.getPosition(j), walls.getBoundingBox(k));
+					if (result) {
+						collided = true;
+					}
+				}
+				if (!collided) {
+					dist = collisionDetection.getDistance(enemyDrones.getCenter(i), pathFinding.getPosition(j));
+					if (dist < minDistance) {
+						index = j;
+						minDistance = dist;
+					}
+				}
+			}
+			if (index != -1) {
+				enemyDrones.setPath(i, pathFinding.getPath(index, closestNodeToPlayerIndex));
+			}
+		}
+
 	}
+
 
 	for (int i = 0; i < projectiles.getVectorSize(); i++) {
 		if (projectiles.getDamageType(i) == damageFriendly) {
@@ -372,7 +433,7 @@ void MainGame::drawGame() {
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	spriteBatch.begin();
 
-	pathFinding.draw();
+	//pathFinding.draw();
 
 	player.draw();
 	walls.draw();
@@ -390,10 +451,18 @@ void MainGame::drawGame() {
 		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
 	}
 	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
-		temp = pathFinding.getPosition(i) + glm::vec2(0, 20);
-		drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
+		//temp = pathFinding.getPosition(i) + glm::vec2(0, 20);
+		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
 	}
-	
+	//printf("nodes in path: %d\n", tempPath.size());
+	//for (int i = 0; i < tempPath.size() - 1; i++) {
+	//	GameEngine::Color color;
+	//	color.r = 255;
+	//	color.g = 100;
+	//	color.b = 100;
+	//	color.a = 255;
+	//	spriteBatch.drawLine(tempPath[i], tempPath[i + 1], color, 2);
+	//}
 
 	spriteBatch.end();
 

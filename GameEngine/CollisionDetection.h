@@ -16,6 +16,7 @@ namespace GameEngine {
 		void correctPosition(glm::vec4* _rect1, glm::vec4* _rect2);
 		bool correctPosition(BoundingBox* bb1, BoundingBox* bb2);
 		bool isCheckRequired(BoundingBox* bb1, BoundingBox* bb2);
+		bool checkParallel(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4);
 		glm::vec2 getLineIntersect(glm::vec2 _p1, glm::vec2 _p2, glm::vec2 _p3, glm::vec2 _p4);
 		bool lineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox);
 		glm::vec2 getLineRectCollision(glm::vec2 _p1, glm::vec2 _p2, BoundingBox* _boundingBox);

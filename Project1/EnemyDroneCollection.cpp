@@ -72,6 +72,26 @@ glm::vec2 EnemyDroneCollection::getCenter(int _index)
 	return glm::vec2(temp.x + temp.w / 2, temp.y + temp.h / 2);
 }
 
+bool EnemyDroneCollection::hasTarget(int _index)
+{
+	return enemyDroneVector[_index]->hasTarget();
+}
+
+void EnemyDroneCollection::setPath(int _index, std::vector<glm::vec2> _path)
+{
+	enemyDroneVector[_index]->setPath(_path);
+}
+
+bool EnemyDroneCollection::hasPath(int _index)
+{
+	return enemyDroneVector[_index]->hasPath();
+}
+
+float EnemyDroneCollection::getSensorRange(int _index)
+{
+	return enemyDroneVector[_index]->getSensorRange();
+}
+
 void EnemyDroneCollection::target(int _index, BoundingBox* _boundingBox)
 {
 	//if old target is null new target is closer that old target

@@ -2,6 +2,7 @@
 #include <vector>
 #include <glm.hpp>
 #include <GameEngine/SpriteBatch.h>
+#include <GameEngine/CollisionDetection.h>
 struct Node {
 	int numberOfNeighbors;
 	std::vector<Node*> neighbors;

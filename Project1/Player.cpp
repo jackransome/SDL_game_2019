@@ -16,13 +16,13 @@ void Player::init(float _x, float _y, GameEngine::SpriteBatch* _sb, GameEngine::
 	camera = _c;
 	boundingBox.x = _x;
 	boundingBox.y = _y;
-	boundingBox.w = 32;
-	boundingBox.h = 32;
+	boundingBox.w = 16;
+	boundingBox.h = 16;
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
-	speed = 4;
+	speed = 8;
 	health = 10;
-	mainSprite.init(sb, 16, 16, 2, 4, 16, 0, 0);
+	mainSprite.init(sb, 16, 16, 1, 4, 16, 0, 0);
 	mainSprite.loadTexture("textures/player1.png");
 }
 BoundingBox* Player::getBoundingBox() {

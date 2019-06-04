@@ -18,6 +18,8 @@ public:
 	void changeHealth(int _index, int _amount);
 	void remove(int _index);
 	BoundingBox* getBoundingBox(int _index);
+	bool getStatic(int _index);
+	float getSensorRange(int _index);
 	int getVectorSize() { return wallTurretVector.size(); }
 	void clearTargets();
 	void target(int _index, BoundingBox* _boundingBox);

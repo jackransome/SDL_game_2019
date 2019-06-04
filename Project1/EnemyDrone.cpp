@@ -28,8 +28,9 @@ void EnemyDrone::init(glm::vec2 _position, GameEngine::SpriteBatch * _sb, Projec
 	shootRange = 200;
 	sensorRange = 400;
 	minRange = 100;
-	speed = 2;
-	health = 5;
+	speed = 5;
+	health = 10;
+	maxShootDown = 20;
 }
 
 void EnemyDrone::run()
@@ -42,7 +43,9 @@ void EnemyDrone::run()
 		else {
 			shooting = false;
 		}
+		//if within sensor range but outside of min range
 		if (dist > minRange && dist < sensorRange) {
+			pathSet = false;
 			float theta = atan(-1 * (boundingBox.y - target->y) / (boundingBox.x - target->x));
 			if (boundingBox.x > target->x) {
 				boundingBox.yv = -(sin(theta) * -1 * speed);
@@ -53,22 +56,40 @@ void EnemyDrone::run()
 				boundingBox.xv = -(cos(theta) * -1 * speed);
 			}
 		}
-		else {
+		//if at min range
+		else if (dist < sensorRange) {
+			pathSet = false;
 			boundingBox.yv = boundingBox.xv = 0;
 		}
 		if (shooting) {
+			pathSet = false;
 			if (shootCoolDown == 0) {
 				shootAt(*target);
-				shootCoolDown = 20;
+				shootCoolDown = maxShootDown;
 			}
 			if (shootCoolDown > 0) {
 				shootCoolDown--;
 			}
 		}
 	}
-	else {
-		boundingBox.yv = boundingBox.xv = 0;
+	if (pathSet) {
 		shooting = false;
+		//if very close to first node in path
+		float dist = sqrt(pow((boundingBox.x + boundingBox.w / 2) - path[0].x, 2) + pow((boundingBox.y + boundingBox.h / 2) - path[0].y, 2));
+		if (sqrt(pow((boundingBox.x + boundingBox.w / 2) - path[0].x, 2) + pow((boundingBox.y + boundingBox.h / 2) - path[0].y, 2)) <= speed && path.size() > 1) {
+			boundingBox.x = path[0].x;
+			boundingBox.y = path[0].y;
+			path.erase(path.begin());
+		}
+		float theta = atan(-1 * (boundingBox.y + boundingBox.h / 2 - path[0].y) / (boundingBox.x + boundingBox.w / 2 - path[0].x));
+		if (boundingBox.x + boundingBox.w / 2 > path[0].x) {
+			boundingBox.yv = -(sin(theta) * -1 * speed);
+			boundingBox.xv = -(cos(theta) * speed);
+		}
+		else {
+			boundingBox.yv = -(sin(theta) * speed);
+			boundingBox.xv = -(cos(theta) * -1 * speed);
+		}
 	}
 }
 
@@ -113,6 +134,30 @@ float EnemyDrone::getHealth()
 void EnemyDrone::changeHealth(float _amount)
 {
 	health += _amount;
+}
+
+void EnemyDrone::setPath(std::vector<glm::vec2> _path)
+{
+	path = _path;
+	pathSet = true;
+}
+
+float EnemyDrone::getSensorRange()
+{
+	return sensorRange;
+}
+
+bool EnemyDrone::hasPath()
+{
+	return pathSet;
+}
+
+bool EnemyDrone::hasTarget()
+{
+	if (target) {
+		return true;
+	}
+	return false;
 }
 
 void EnemyDrone::shootAt(BoundingBox _boundingBox)
