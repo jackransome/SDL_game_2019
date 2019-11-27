@@ -1,47 +1,7 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (PathFinding.vcxproj, Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  EnemyDrone.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\enemydrone.cpp(147): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-  EnemyDroneCollection.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\enemydronecollection.cpp(24): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\enemydronecollection.cpp(36): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\enemydronecollection.cpp(53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\jack\documents\github\sdl_game_2019\project1\enemydronecollection.cpp(58): warning C4018: '<': signed/unsigned mismatch
-  main.cpp
-  MainGame.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(39): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(173): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(331): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(340): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\jack\documents\github\sdl_game_2019\project1\maingame.cpp(380): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-  PathFinding.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(24): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(31): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(41): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(83): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(101): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(103): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(116): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(129): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\pathfinding.cpp(163): warning C4018: '<': signed/unsigned mismatch
-  Player.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\player.cpp(48): warning C4244: '*=': conversion from 'double' to 'float', possible loss of data
-c:\users\jack\documents\github\sdl_game_2019\project1\player.cpp(49): warning C4244: '*=': conversion from 'double' to 'float', possible loss of data
-  Projectile.cpp
-  ProjectileCollection.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\projectilecollection.cpp(26): warning C4018: '<': signed/unsigned mismatch
-c:\users\jack\documents\github\sdl_game_2019\project1\projectilecollection.cpp(33): warning C4018: '<': signed/unsigned mismatch
-  RandomGeneration.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\randomgeneration.cpp(20): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\jack\documents\github\sdl_game_2019\project1\randomgeneration.cpp(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Wall.cpp
-  WallCollection.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\wallcollection.cpp(13): warning C4018: '<': signed/unsigned mismatch
-  WallTurret.cpp
-c:\users\jack\documents\github\sdl_game_2019\project1\wallturret.cpp(93): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
   WallTurretCollection.cpp
 c:\users\jack\documents\github\sdl_game_2019\project1\wallturretcollection.cpp(42): warning C4018: '<': signed/unsigned mismatch
 c:\users\jack\documents\github\sdl_game_2019\project1\wallturretcollection.cpp(66): warning C4018: '<': signed/unsigned mismatch
 c:\users\jack\documents\github\sdl_game_2019\project1\wallturretcollection.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\jack\documents\github\sdl_game_2019\project1\wallturretcollection.cpp(93): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
   Project1.vcxproj -> C:\Users\Jack\Documents\GitHub\SDL_game_2019\Debug\Game.exe
