@@ -107,8 +107,12 @@
     <LibraryPath>C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\SDL2-2.0.4\lib\x86;$(SolutionDir)Debug/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\jack\Documents\GitHub\SDLgame\glew-1.13.0-win32\glew-1.13.0\lib\Release\Win32;C:\Users\jack\Documents\GitHub\SDLgame\SDL2-2.0.4\lib\x86;$(SolutionDir)Debug/;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\jack\Documents\GitHub\SDLgame\glew-1.13.0-win32\glew-1.13.0\include;$(SolutionDir);C:\Users\jack\Documents\GitHub\SDLgame\SDL2-2.0.4\include;C:\Users\jack\Documents\GitHub\SDLgame\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)\Libraries\SDL2-2.0.4\lib\x86;$(SolutionDir)Debug/;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Libraries\glew-2.1.0\include;$(SolutionDir)\Libraries\SDL2-2.0.4\include;$(SolutionDir)\Libraries\glm;$(SolutionDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(SolutionDir);C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\lib\Release\x64;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\SDL2-2.0.4\lib\x64;$(SolutionDir)Debug/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,6 +132,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;GameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

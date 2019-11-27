@@ -433,7 +433,7 @@ void MainGame::drawGame() {
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	spriteBatch.begin();
 
-	//pathFinding.draw();
+	pathFinding.draw();
 
 	player.draw();
 	walls.draw();

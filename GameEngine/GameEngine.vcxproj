@@ -70,12 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\jack\Documents\GitHub\SDLgame\glew-1.13.0-win32\glew-1.13.0\lib\Release\Win32;C:\Users\jack\Documents\GitHub\SDLgame\SDL2-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\jack\Documents\GitHub\SDLgame\glm;C:\Users\jack\Documents\GitHub\SDLgame\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDLgame\glew-1.13.0-win32\glew-1.13.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)9\Libraries\SDL2-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\glew-1.13.0-win32\glew-1.13.0\lib\Release\Win32;C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\SDL2-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\glm;C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\SDL2-2.0.4\include;C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\glew-1.13.0-win32\glew-1.13.0\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glm;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\lib\Release\x64;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\SDL2-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
