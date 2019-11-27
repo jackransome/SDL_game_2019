@@ -2,7 +2,7 @@ In order to compile this project you must have the required libraries, stored in
 
 ![image 1](/readme_images/1.PNG)
 
-This image shows the contents of the folder. The DLLs foler is not necessary, I use it to keep track of 32/64bit DLLs from the libraries
+This image shows the contents of the folder. The DLLs folder is not necessary, I use it to keep track of 32/64bit DLLs from the libraries
 
 ![image 2](/readme_images/2.PNG)
 
