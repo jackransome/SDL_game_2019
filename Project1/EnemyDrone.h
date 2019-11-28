@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngine.h>
 
 #include "ProjectileCollection.h"
+#include "Path.h"
 
 class EnemyDrone {
 public:
@@ -21,12 +22,12 @@ public:
 	BoundingBox* getTarget();
 	float getHealth();
 	void changeHealth(float _amount);
-	void setPath(std::vector<glm::vec2> _path);
+	void setPath(Path* _path);
 	float getSensorRange();
 	bool hasPath();
 	bool hasTarget();
 private:
-	std::vector<glm::vec2> path;
+	Path* path;
 	int shootCoolDown;
 	void shootAt(BoundingBox _boundingBox);
 	BoundingBox* target;
@@ -34,6 +35,7 @@ private:
 	ProjectileCollection* projectiles;
 	GameEngine::SpriteBatch* sb;
 	BoundingBox boundingBox;
+	glm::vec2 lastOnPositionOnPath;
 	bool pathSet;
 	bool shooting;
 	int sensorRange;

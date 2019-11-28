@@ -57,6 +57,12 @@ namespace GameEngine {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		// Getting the window handle (needed in particular for cute_sound)
+		//SDL_SysWMinfo wmInfo;
+		//SDL_VERSION(&wmInfo.version);
+		//SDL_GetWindowWMInfo(_sdlWindow, &wmInfo);
+		//handle = wmInfo.info.win.window;
+
         return 0;
     }
 

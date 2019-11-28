@@ -3,11 +3,19 @@
 #include <glm.hpp>
 #include <GameEngine/SpriteBatch.h>
 #include <GameEngine/CollisionDetection.h>
+
+#include "Path.h"
+
 struct Node {
-	int numberOfNeighbors;
-	std::vector<Node*> neighbors;
-	Node* previous = NULL;
+	int numberOfNeighbors = 0;
+	// used only in setting up the nodes
+	std::vector<Node*> neighborsVector;
+
+	Node **neighbors;
 	glm::vec2 position;
+	// used in pathfinding algorithm to find path
+	Node* previous = NULL;
+	// used in pathfinding algorithm to avoid going backward / in loops
 	bool visited;
 };
 
@@ -20,7 +28,8 @@ public:
 	void optimiseNetwork();
 	bool isConnectedTo(int _index1, int _index2);
 	void draw();
-	std::vector<glm::vec2> getPath(int _index1, int _index2);
+	void fillNeighbors();
+	Path* getPath(int _index1, int _index2);
 	int getVectorSize() { return nodes.size(); }
 	glm::vec2 getPosition(int _index);
 private:

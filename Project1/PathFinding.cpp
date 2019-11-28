@@ -12,25 +12,28 @@ void PathFinding::addNode(glm::vec2 _position)
 	
 }
 
+// Can only be used in the setup of the network as this acts on the vector not array
 void PathFinding::connectNodes(int _index1, int _index2)
 {
-	nodes[_index1]->neighbors.push_back(nodes[_index2]);
-	nodes[_index2]->neighbors.push_back(nodes[_index1]);
+	nodes[_index1]->neighborsVector.push_back(nodes[_index2]);
+	nodes[_index1]->numberOfNeighbors++;
+	nodes[_index2]->neighborsVector.push_back(nodes[_index1]);
+	nodes[_index2]->numberOfNeighbors++;
 }
-
+// Can only be used in the setup of the network as this acts on the vector not array
 void PathFinding::disconnectNodes(int _index1, int _index2)
 {
 	//go through index1 and find index 2
-	for (int i = 0; i < nodes[_index1]->neighbors.size(); i++) {
-		if (nodes[_index1]->neighbors[i] == nodes[_index2]) {
-			nodes[_index1]->neighbors.erase(nodes[_index1]->neighbors.begin() + i);
+	for (int i = 0; i < nodes[_index1]->numberOfNeighbors; i++) {
+		if (nodes[_index1]->neighborsVector[i] == nodes[_index2]) {
+			nodes[_index1]->neighborsVector.erase(nodes[_index1]->neighborsVector.begin() + i);
 			break;
 		}
 	}
 	//go through index2 and find index 1
-	for (int i = 0; i < nodes[_index2]->neighbors.size(); i++) {
-		if (nodes[_index2]->neighbors[i] == nodes[_index1]) {
-			nodes[_index2]->neighbors.erase(nodes[_index2]->neighbors.begin() + i);
+	for (int i = 0; i < nodes[_index2]->numberOfNeighbors; i++) {
+		if (nodes[_index2]->neighborsVector[i] == nodes[_index1]) {
+			nodes[_index2]->neighborsVector.erase(nodes[_index2]->neighborsVector.begin() + i);
 			break;
 		}
 	}
@@ -80,7 +83,7 @@ void PathFinding::optimiseNetwork()
 
 bool PathFinding::isConnectedTo(int _index1, int _index2)
 {
-	for (int i = 0; i < nodes[_index1]->neighbors.size(); i++) {
+	for (int i = 0; i < nodes[_index1]->numberOfNeighbors; i++) {
 		if (nodes[_index1]->neighbors[i] == nodes[_index2]) {
 			return true;
 		}
@@ -100,19 +103,34 @@ void PathFinding::draw()
 	connectionColor.b = 20;
 	for (int i = 0; i < nodes.size(); i++) {
 		sb->drawLine(nodes[i]->position, nodes[i]->position + glm::vec2(10, 10), nodeColor, 1);
-		for (int j = 0; j < nodes[i]->neighbors.size(); j++) {
+		for (int j = 0; j < nodes[i]->numberOfNeighbors; j++) {
 			sb->drawLine(nodes[i]->position, nodes[i]->neighbors[j]->position, connectionColor, 1);
 		}
 	}
 }
 
-std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
+void PathFinding::fillNeighbors()
 {
-	std::vector<glm::vec2> path;
+	// Looping through all nodes and filling their neighbors array using their neighbors vector, then removing the vector
+	for (int i = 0; i < nodes.size(); i++) {
+		// Allocating the memory for the neighbors array
+		nodes[i]->neighbors = (Node**)malloc(sizeof(Node*) * nodes[i]->numberOfNeighbors);
+		// Filling the array
+		for (int j = 0; j < nodes[i]->numberOfNeighbors; j++){
+			nodes[i]->neighbors[j] = nodes[i]->neighborsVector[j];
+		}
+		// Emptying the vector:
+		nodes[i]->neighborsVector.clear();
+	}
+}
+
+Path* PathFinding::getPath(int _start, int _end)
+{
+	
 	std::vector<Node*> queue;
 	
 
-	//reseting previous
+	//reseting previous and visited
 	for (int i = 0; i < nodes.size(); i++) {
 		nodes[i]->previous = nullptr;
 		nodes[i]->visited = false;
@@ -126,7 +144,7 @@ std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
 	//go through all neighbors of end node
 	while (queue.size() && !startFound) {
 		//go through all neighbors of first node in queue
-		for (int i = 0; i < queue[0]->neighbors.size(); i++) {
+		for (int i = 0; i < queue[0]->numberOfNeighbors; i++) {
 			//if this neighbor hasn't been visited
 			if (!queue[0]->neighbors[i]->visited) {
 				//if it finds the start
@@ -140,7 +158,7 @@ std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
 					queue.push_back(queue[0]->neighbors[i]);
 					queue[queue.size() - 1]->visited = true;
 				}
-				//etting the neighbor added to the queue's previous to the current node
+				//getting the neighbor added to the queue's previous to the current node
 				queue[0]->neighbors[i]->previous = queue[0];
 			}
 		}
@@ -149,8 +167,19 @@ std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
 	}
 	//going back through the nodes using previous and creating the path
 	Node* current = nodes[_start];
+
+	Path* path = new Path;
+
+	Path* currentPath = path;
+	Path* previousPath = path;
+
 	while (true) {
-		path.push_back(current->position);
+		if (previousPath != currentPath) {
+			previousPath->next = currentPath;
+		}
+		currentPath->position = current->position;
+		previousPath = currentPath;
+		currentPath = new Path;
 		if (current->previous) {
 			current = current->previous;
 		}
@@ -158,11 +187,7 @@ std::vector<glm::vec2> PathFinding::getPath(int _start, int _end)
 			break;
 		}
 	}
-	//printing the output
-	//printf("Path:");
-	for (int i = 0; i < path.size(); i++) {
-		//printf("i: %f, %f\n", path[i].x, path[i].y);
-	}
+	previousPath->next = NULL;
 	return path;
 }
 

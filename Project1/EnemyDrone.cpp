@@ -35,7 +35,23 @@ void EnemyDrone::init(glm::vec2 _position, GameEngine::SpriteBatch * _sb, Projec
 
 void EnemyDrone::run()
 {
+	// |------|-----------|--------------|
+	// Target |			  |              |
+	//        Min range   |              |
+	//                    Shooting range |
+	// Shoots \/                         Sensor range
+	// |------------------|
+	// Moves closer to target \/
+	//        |--------------------------|
+	//                        Follows pathfinding \/
+	//                                   |-------- - - - - - - - -   -   -   -   -   -
+
+	// if drone has a target ( does not happen until drone is within sensor range )
 	if (target) {
+		if (pathSet) {
+
+		}
+		pathSet = false;
 		float dist = sqrt(pow(target->x - boundingBox.x, 2) + pow(target->y - boundingBox.y, 2));
 		if (dist < shootRange) {
 			shooting = true;
@@ -43,9 +59,8 @@ void EnemyDrone::run()
 		else {
 			shooting = false;
 		}
-		//if within sensor range but outside of min range
-		if (dist > minRange && dist < sensorRange) {
-			pathSet = false;
+		//if within sensor range but outside of min range: move towards target
+		if (dist > minRange) {
 			float theta = atan(-1 * (boundingBox.y - target->y) / (boundingBox.x - target->x));
 			if (boundingBox.x > target->x) {
 				boundingBox.yv = -(sin(theta) * -1 * speed);
@@ -56,13 +71,12 @@ void EnemyDrone::run()
 				boundingBox.xv = -(cos(theta) * -1 * speed);
 			}
 		}
-		//if at min range
-		else if (dist < sensorRange) {
-			pathSet = false;
+		//if at min range: stop
+		else if (dist <= minRange) {
 			boundingBox.yv = boundingBox.xv = 0;
 		}
+		// if shooting (set to true above if within shooting range)
 		if (shooting) {
-			pathSet = false;
 			if (shootCoolDown == 0) {
 				shootAt(*target);
 				shootCoolDown = maxShootDown;
@@ -72,23 +86,30 @@ void EnemyDrone::run()
 			}
 		}
 	}
+
+	// If drone is not in line of sight of AND close enough to a target
 	if (pathSet) {
 		shooting = false;
-		//if very close to first node in path
-		float dist = sqrt(pow((boundingBox.x + boundingBox.w / 2) - path[0].x, 2) + pow((boundingBox.y + boundingBox.h / 2) - path[0].y, 2));
-		if (sqrt(pow((boundingBox.x + boundingBox.w / 2) - path[0].x, 2) + pow((boundingBox.y + boundingBox.h / 2) - path[0].y, 2)) <= speed && path.size() > 1) {
-			boundingBox.x = path[0].x;
-			boundingBox.y = path[0].y;
-			path.erase(path.begin());
-		}
-		float theta = atan(-1 * (boundingBox.y + boundingBox.h / 2 - path[0].y) / (boundingBox.x + boundingBox.w / 2 - path[0].x));
-		if (boundingBox.x + boundingBox.w / 2 > path[0].x) {
-			boundingBox.yv = -(sin(theta) * -1 * speed);
-			boundingBox.xv = -(cos(theta) * speed);
+		float dist = sqrt(pow((boundingBox.x + boundingBox.w / 2) - path->position.x, 2) + pow((boundingBox.y + boundingBox.h / 2) - path->position.y, 2));
+		//if very close to first node in path: snap to it and remove first node from the list
+		if (sqrt(pow((boundingBox.x + boundingBox.w / 2) - path->position.x, 2) + pow((boundingBox.y + boundingBox.h / 2) - path->position.y, 2)) <= speed) {
+			boundingBox.x = path->position.x;
+			boundingBox.y = path->position.y;
+			Path* oldNode = path;
+			path = path->next;
+			//DELETE OLD PATH?
 		}
 		else {
-			boundingBox.yv = -(sin(theta) * speed);
-			boundingBox.xv = -(cos(theta) * -1 * speed);
+			//if not close, move towards it
+			float theta = atan(-1 * (boundingBox.y + boundingBox.h / 2 - path->position.y) / (boundingBox.x + boundingBox.w / 2 - path->position.x));
+			if (boundingBox.x + boundingBox.w / 2 > path->position.x) {
+				boundingBox.yv = -(sin(theta) * -1 * speed);
+				boundingBox.xv = -(cos(theta) * speed);
+			}
+			else {
+				boundingBox.yv = -(sin(theta) * speed);
+				boundingBox.xv = -(cos(theta) * -1 * speed);
+			}
 		}
 	}
 }
@@ -136,7 +157,7 @@ void EnemyDrone::changeHealth(float _amount)
 	health += _amount;
 }
 
-void EnemyDrone::setPath(std::vector<glm::vec2> _path)
+void EnemyDrone::setPath(Path* _path)
 {
 	path = _path;
 	pathSet = true;

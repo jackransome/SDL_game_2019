@@ -147,6 +147,7 @@ void MainGame::initSystems() {
 			}
 		}
 	}
+	pathFinding.fillNeighbors();
 	//pathFinding.optimiseNetwork();
 	int x = 0;
 }
@@ -264,11 +265,13 @@ void MainGame::updateGame() {
 					break;
 				}
 			}
-			if (!isBlocked && sqrt(pow(enemyDrones.getCenter(j).x - wallTurrets.getCenter(i).x, 2) + pow(enemyDrones.getCenter(j).y - wallTurrets.getCenter(i).y, 2)) < enemyDrones.getSensorRange(j)) {
-				enemyDrones.target(j, wallTurrets.getBoundingBox(i));
-			}
-			if (!isBlocked && sqrt(pow(wallTurrets.getCenter(i).x - enemyDrones.getCenter(j).x, 2) + pow(wallTurrets.getCenter(i).y - enemyDrones.getCenter(j).y, 2)) < wallTurrets.getSensorRange(i)) {
-				wallTurrets.target(i, enemyDrones.getBoundingBox(j));
+			if (!isBlocked) {
+				if (sqrt(pow(enemyDrones.getCenter(j).x - wallTurrets.getCenter(i).x, 2) + pow(enemyDrones.getCenter(j).y - wallTurrets.getCenter(i).y, 2)) < enemyDrones.getSensorRange(j)) {
+					enemyDrones.target(j, wallTurrets.getBoundingBox(i));
+				}
+				if (sqrt(pow(wallTurrets.getCenter(i).x - enemyDrones.getCenter(j).x, 2) + pow(wallTurrets.getCenter(i).y - enemyDrones.getCenter(j).y, 2)) < wallTurrets.getSensorRange(i)) {
+					wallTurrets.target(i, enemyDrones.getBoundingBox(j));
+				}
 			}
 		}
 	}

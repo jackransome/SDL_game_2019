@@ -15,7 +15,6 @@
 #include <GameEngine/SpriteBatch.h>
 #include <GameEngine/Camera2D.h>
 #include <GameEngine/DrawText.h>
-#include <GameEngine\DrawText.h>
 
 #include "Player.h"
 #include "WallCollection.h"

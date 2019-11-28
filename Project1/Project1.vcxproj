@@ -22,6 +22,7 @@
     <ClInclude Include="EnemyDrone.h" />
     <ClInclude Include="EnemyDroneCollection.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="PathFinding.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />

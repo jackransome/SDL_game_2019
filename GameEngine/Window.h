@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include <string>
+//#include <SDL_syswm.h>
 
 namespace GameEngine {
 
@@ -20,6 +21,7 @@ namespace GameEngine {
         int getScreenWidth() { _screenWidth; }
         int getScreenHeight() { _screenHeight; }
     private:
+		//HWND handle;
         SDL_Window* _sdlWindow;
         int _screenWidth, _screenHeight;
     };

@@ -77,7 +77,7 @@ bool EnemyDroneCollection::hasTarget(int _index)
 	return enemyDroneVector[_index]->hasTarget();
 }
 
-void EnemyDroneCollection::setPath(int _index, std::vector<glm::vec2> _path)
+void EnemyDroneCollection::setPath(int _index, Path* _path)
 {
 	enemyDroneVector[_index]->setPath(_path);
 }
@@ -94,7 +94,7 @@ float EnemyDroneCollection::getSensorRange(int _index)
 
 void EnemyDroneCollection::target(int _index, BoundingBox* _boundingBox)
 {
-	//if old target is null new target is closer that old target
+	//if old target is null or new target is closer that old target
 	if (!enemyDroneVector[_index]->getTarget() || sqrt(pow(_boundingBox->x - enemyDroneVector[_index]->getBoundingBox()->x, 2) + pow(_boundingBox->y - enemyDroneVector[_index]->getBoundingBox()->y, 2)) < sqrt(pow(enemyDroneVector[_index]->getTarget()->x - enemyDroneVector[_index]->getBoundingBox()->x, 2) + pow(enemyDroneVector[_index]->getTarget()->y - enemyDroneVector[_index]->getBoundingBox()->y, 2))) {
 		//set this turrets target to the new one
 		enemyDroneVector[_index]->setTarget(_boundingBox);
