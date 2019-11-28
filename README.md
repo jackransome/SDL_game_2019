@@ -10,5 +10,6 @@ In addition to having this libraries folder, glew32.dll and SDL2.dll from these 
 
 ![image 3](/readme_images/3.PNG)
 
-Current state of things:
+Current state of things: (click image to watch youtube video)
+
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/gnPiQyHhYTc/0.jpg)](https://www.youtube.com/watch?v=gnPiQyHhYTc)
