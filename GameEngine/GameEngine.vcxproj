@@ -81,6 +81,10 @@
     <IncludePath>$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\x64;$(SolutionDir)\Libraries\SDL2-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\x64;$(SolutionDir)\Libraries\SDL2-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>

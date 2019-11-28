@@ -12,6 +12,7 @@ struct Node {
 	std::vector<Node*> neighborsVector;
 
 	Node **neighbors;
+	int *distances;
 	glm::vec2 position;
 	// used in pathfinding algorithm to find path
 	Node* previous = NULL;
@@ -24,6 +25,7 @@ struct Node {
 class PathFinding {
 public:
 	void init(GameEngine::SpriteBatch* _sb);
+	void clearNodeData();
 	void addNode(glm::vec2 _position);
 	void connectNodes(int _index1, int _index2);
 	void disconnectNodes(int _index1, int _index2);

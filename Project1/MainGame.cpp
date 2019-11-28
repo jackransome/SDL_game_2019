@@ -21,7 +21,6 @@ MainGame::MainGame() :
 	_camera.init(_screenWidth, _screenHeight, 0, 0);
 }
 
-//Destructor
 MainGame::~MainGame()
 {
 }
@@ -33,6 +32,8 @@ void MainGame::run() {
 
 	//This only returns when the game ends
 	gameLoop();
+
+	pathFinding.clearNodeData();
 }
 //Initialize SDL and Opengl and whatever else we need
 void MainGame::initSystems() {
@@ -47,6 +48,7 @@ void MainGame::initSystems() {
 	drawText.init(&spriteBatch);
 	_fpsLimiter.init(_maxFPS);
 	_camera.setScreenShakeIntensity(0);
+
 	//initialising collections
 	projectiles.init(&spriteBatch);
 	walls.init(&spriteBatch);
@@ -142,7 +144,7 @@ void MainGame::initSystems() {
 					}
 				}
 			}
-			if (!collides) {
+			if (!collides && i != j) { // HERE
 				pathFinding.connectNodes(i, j);
 			}
 		}

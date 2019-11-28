@@ -5,6 +5,14 @@ void PathFinding::init(GameEngine::SpriteBatch * _sb)
 	sb = _sb;
 }
 
+void PathFinding::clearNodeData()
+{
+	for (int i = 0; i < nodes.size(); i++) {
+		free(nodes[i]->neighbors);
+	}
+	nodes.clear();
+}
+
 void PathFinding::addNode(glm::vec2 _position)
 {
 	nodes.push_back(new Node);
@@ -115,13 +123,22 @@ void PathFinding::fillNeighbors()
 	for (int i = 0; i < nodes.size(); i++) {
 		// Allocating the memory for the neighbors array
 		nodes[i]->neighbors = (Node**)malloc(sizeof(Node*) * nodes[i]->numberOfNeighbors);
-		// Filling the array
+		// Filling the neighbors array
 		for (int j = 0; j < nodes[i]->numberOfNeighbors; j++){
 			nodes[i]->neighbors[j] = nodes[i]->neighborsVector[j];
 		}
+		// Allocating the memory for the distance array
+		nodes[i]->distances = (int*)malloc(sizeof(int) * nodes[i]->numberOfNeighbors);
+		// Filling distance array
+		for (int j = 0; j < nodes[i]->numberOfNeighbors; j++) {
+			nodes[i]->distances[j] = sqrt(pow(nodes[i]->position.x - nodes[i]->neighbors[j]->position.x, 2) + pow(nodes[i]->position.y - nodes[i]->neighbors[j]->position.y, 2));
+		}
+		// Ordering neighbors/distance array based on distance from the node
+		
 		// Emptying the vector:
 		nodes[i]->neighborsVector.clear();
 	}
+	
 }
 
 Path* PathFinding::getPath(int _start, int _end)
