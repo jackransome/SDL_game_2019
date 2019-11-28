@@ -17,6 +17,8 @@ struct Node {
 	Node* previous = NULL;
 	// used in pathfinding algorithm to avoid going backward / in loops
 	bool visited;
+
+	Path *cachedPath = NULL;
 };
 
 class PathFinding {

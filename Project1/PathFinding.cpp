@@ -126,7 +126,19 @@ void PathFinding::fillNeighbors()
 
 Path* PathFinding::getPath(int _start, int _end)
 {
-	
+	// check if cached path for _start exist
+	if (nodes[_start]->cachedPath) {
+		// check if the cached path leads to _end, if so, return it
+		Path* curr = nodes[_start]->cachedPath;
+		while (curr) {
+			// if _end is found in the path return it (not an issue if it's the last node)
+			if (curr->position == nodes[_end]->position) {
+				return nodes[_start]->cachedPath;
+			}
+			curr = curr->next;
+		}
+	}
+
 	std::vector<Node*> queue;
 	
 
@@ -162,7 +174,7 @@ Path* PathFinding::getPath(int _start, int _end)
 				queue[0]->neighbors[i]->previous = queue[0];
 			}
 		}
-		//remove first element from queue;
+		//remove first element from queue
 		queue.erase(queue.begin());
 	}
 	//going back through the nodes using previous and creating the path
@@ -188,6 +200,7 @@ Path* PathFinding::getPath(int _start, int _end)
 		}
 	}
 	previousPath->next = NULL;
+	nodes[_start]->cachedPath = path;
 	return path;
 }
 
