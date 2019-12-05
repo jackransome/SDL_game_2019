@@ -1,15 +1,6 @@
 #include "WallTurret.h"
 
-WallTurret::WallTurret()
-{
-}
-
-WallTurret::~WallTurret()
-{
-}
-
-void WallTurret::init(glm::vec2 _position, glm::vec2 _velocity, GameEngine::SpriteBatch * _sb, ProjectileCollection* _projectiles)
-{
+WallTurret::WallTurret(glm::vec2 _position, glm::vec2 _velocity, GameEngine::SpriteBatch * _sb, ProjectileCollection* _projectiles){
 	sb = _sb;
 	projectiles = _projectiles;
 	boundingBox.x = _position.x;
@@ -30,7 +21,10 @@ void WallTurret::init(glm::vec2 _position, glm::vec2 _velocity, GameEngine::Spri
 	maxShootDown = 20;
 	sensorRange = 400;
 	health = 20;
+	damagePower = 1;
 }
+
+WallTurret::~WallTurret() {}
 
 void WallTurret::run()
 {
@@ -113,5 +107,5 @@ void WallTurret::setTarget(BoundingBox * _boundingBox)
 
 void WallTurret::shootAt(BoundingBox _boundingBox)
 {
-	projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), glm::vec2(_boundingBox.x + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageEnemy);
+	projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), glm::vec2(_boundingBox.x + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageEnemy, damagePower);
 }

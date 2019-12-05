@@ -6,9 +6,8 @@ enum DamageType { damageFriendly, damageEnemy };
 
 class Projectile {
 public:
-	Projectile();
+	Projectile(GameEngine::SpriteBatch* _sb, float _x, float _y, float _xVel, float _yVel, DamageType _damageType, float _damageAmount);
 	~Projectile();
-	void init(GameEngine::SpriteBatch* _sb, float _x, float _y, float _xVel, float _yVel, DamageType _damageType, float _damage);
 	void calcNewPos();
 	glm::vec2 getPosition() { return position; }
 	glm::vec2 getLastPosition() { return lastPosition; }

@@ -3,12 +3,10 @@
 
 #include "Player.h"
 
-Player::Player()
-{
-}
-Player::~Player()
-{
-}
+Player::Player() {}
+
+Player::~Player(){}
+
 void Player::init(float _x, float _y, GameEngine::SpriteBatch* _sb, GameEngine::Camera2D* _c, ProjectileCollection* _projectiles, WallTurretCollection* _wallTurrets) {
 	sb = _sb;
 	projectiles = _projectiles;
@@ -50,7 +48,7 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	}
 
 	if (_im->isKeyPressed(SDL_BUTTON_LEFT) && !_im->lastMouseL) {
-		projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 20, damageEnemy);
+		projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 20, damageEnemy, damagePower);
 	}
 	if (_im->isKeyPressed(SDL_BUTTON_RIGHT) && !_im->lastMouseR) {
 		wallTurrets->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 10);
@@ -78,5 +76,7 @@ glm::vec2 Player::getCenter()
 }
 void Player::draw() {
 	mainSprite.run();
-	mainSprite.draw(boundingBox.x, boundingBox.y);
+	for (int i = 0; i < 15; i++) {
+		mainSprite.draw(boundingBox.x, boundingBox.y + i);
+	}
 }

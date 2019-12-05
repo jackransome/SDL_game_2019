@@ -10,15 +10,16 @@ public:
 	ProjectileCollection();
 	~ProjectileCollection();
 	void init(GameEngine::SpriteBatch* _sb);
-	void add(float _x, float _y, float _xVel, float _yVel, DamageType _damageType);
+	void add(float _x, float _y, float _xVel, float _yVel, DamageType _damageType, float _damageAmount);
 	void draw();
+	void drawByIndex(int _index);
 	void run();
 	int getVectorSize() { return projectileVector.size(); }
 	Projectile* getProjectile(int _index) { return projectileVector[_index]; }
 	float getDamage(int _index);
 	DamageType getDamageType(int _index);
 	void remove(int _index);
-	void launch(glm::vec2 _p1, glm::vec2 _p2, float _vel, DamageType _damageType);
+	void launch(glm::vec2 _p1, glm::vec2 _p2, float _vel, DamageType _damageType, float _damageAmount);
 	void setToDelete(int _index, bool _bool);
 	bool getToDelete(int _index);
 private:

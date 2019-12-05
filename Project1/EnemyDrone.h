@@ -27,6 +27,8 @@ public:
 	bool hasPath();
 	bool hasTarget();
 private:
+
+	float damagePower;
 	Path* path;
 	int shootCoolDown;
 	void shootAt(BoundingBox _boundingBox);

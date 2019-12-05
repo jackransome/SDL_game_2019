@@ -1,16 +1,7 @@
 
 #include "Projectile.h"
 
-Projectile::Projectile()
-{
-}
-
-Projectile::~Projectile()
-{
-}
-
-void Projectile::init(GameEngine::SpriteBatch* _sb, float _x, float _y, float _xVel, float _yVel, DamageType _damageType, float _damage)
-{
+Projectile::Projectile(GameEngine::SpriteBatch* _sb, float _x, float _y, float _xVel, float _yVel, DamageType _damageType, float  _damageAmount){
 	position.x = _x;
 	position.y = _y;
 	velocity.x = _xVel;
@@ -22,8 +13,10 @@ void Projectile::init(GameEngine::SpriteBatch* _sb, float _x, float _y, float _x
 	lifeSpan = 100;
 	lifeCounter = 0;
 	toDelete = false;
-	damage = _damage;
+	damage = _damageAmount;
 }
+
+Projectile::~Projectile(){}
 
 void Projectile::calcNewPos()
 {

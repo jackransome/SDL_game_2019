@@ -24,6 +24,7 @@ public:
 	glm::vec2 getCenter();
 	void draw();
 private:
+	float damagePower;
 	GameEngine::Camera2D* camera;
 	GameEngine::SpriteBatch* sb;
 	BoundingBox boundingBox;

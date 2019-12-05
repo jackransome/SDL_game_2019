@@ -10,9 +10,8 @@
 class WallTurret {
 public:
 
-	WallTurret();
+	WallTurret(glm::vec2 _position, glm::vec2 _velocity, GameEngine::SpriteBatch * _sb, ProjectileCollection* _projectiles);
 	~WallTurret();
-	void init(glm::vec2 _position, glm::vec2 _velocity, GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles);
 	void run();
 	void draw();
 	void calcNewPos();
@@ -26,7 +25,7 @@ public:
 	void setTarget(BoundingBox* _boundingBox);
 
 private:
-
+	float damagePower;
 	int sensorRange;
 	int maxShootDown;
 	int shootCoolDown;

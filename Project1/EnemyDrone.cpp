@@ -31,6 +31,7 @@ void EnemyDrone::init(glm::vec2 _position, GameEngine::SpriteBatch * _sb, Projec
 	speed = 5;
 	health = 10;
 	maxShootDown = 20;
+	damagePower = 1;
 }
 
 void EnemyDrone::run()
@@ -183,5 +184,5 @@ bool EnemyDrone::hasTarget()
 
 void EnemyDrone::shootAt(BoundingBox _boundingBox)
 {
-	projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), glm::vec2(_boundingBox.x + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageFriendly);
+	projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), glm::vec2(_boundingBox.x + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageFriendly, damagePower);
 }

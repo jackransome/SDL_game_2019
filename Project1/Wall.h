@@ -7,12 +7,12 @@
 
 class Wall {
 public:
-	Wall();
+	Wall(float _x, float _y, float _width, float _height, GameEngine::SpriteBatch *_sb);
 	~Wall();
-	void init(float _x, float _y, float _width, float _height);
 	BoundingBox* getBoundingBox();
-	void draw(GameEngine::SpriteBatch* sb);
+	void draw();
 private:
+	GameEngine::SpriteBatch *sb;
 	BoundingBox boundingBox;
 	GameEngine::GLTexture texture;
 };

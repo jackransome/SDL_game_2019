@@ -15,6 +15,7 @@ public:
 	void update();
 	void draw();
 	BoundingBox* getBoundingBox(int _index);
+	void drawByIndex(int _index);
 	void changeHealth(int _index, int _amount);
 	void remove(int _index);
 	int getVectorSize() { return enemyDroneVector.size(); }

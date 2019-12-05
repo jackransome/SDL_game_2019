@@ -87,7 +87,7 @@ void MainGame::initSystems() {
 		}*/
 		randomGeneration.generate();
 	}
-	
+
 	/*for (int i = 0; i < walls.getVectorSize(); i++) {
 		BoundingBox* temp = walls.getBoundingBox(i);
 		for (int j = 0; j < walls.getVectorSize(); j++) {
@@ -225,8 +225,16 @@ void MainGame::updateGame() {
 	}
 	
 
-	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex);
+	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex)
 
+	// drone drone collision
+	/*for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
+		for (int j = 0; j < enemyDrones.getVectorSize(); j++) {
+			if (j != i && collisionDetection.isCheckRequired(enemyDrones.getBoundingBox(i), enemyDrones.getBoundingBox(j))) {
+				collisionDetection.correctPosition(enemyDrones.getBoundingBox(i), enemyDrones.getBoundingBox(j));
+			}
+		}
+	}*/
 	for (int i = 0; i < walls.getVectorSize(); i++) {
 		//player wall collision;
 		if (collisionDetection.isCheckRequired(player.getBoundingBox(), walls.getBoundingBox(i))) {
@@ -438,7 +446,7 @@ void MainGame::drawGame() {
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	spriteBatch.begin();
 
-	pathFinding.draw();
+	//pathFinding.draw();
 
 	player.draw();
 	walls.draw();

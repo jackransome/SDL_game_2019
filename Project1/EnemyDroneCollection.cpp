@@ -1,11 +1,7 @@
 #include "EnemyDroneCollection.h"
-EnemyDroneCollection::EnemyDroneCollection()
-{
-}
+EnemyDroneCollection::EnemyDroneCollection() {}
 
-EnemyDroneCollection::~EnemyDroneCollection()
-{
-}
+EnemyDroneCollection::~EnemyDroneCollection() {}
 
 void EnemyDroneCollection::init(GameEngine::SpriteBatch * _sb, ProjectileCollection * _projectiles)
 {
@@ -36,6 +32,15 @@ void EnemyDroneCollection::draw()
 	for (int i = 0; i < enemyDroneVector.size(); i++) {
 		enemyDroneVector[i]->draw();
 	}
+}
+
+void EnemyDroneCollection::drawByIndex(int _index)
+{
+	if (_index < 0 || _index >= enemyDroneVector.size()) {
+		fprintf(stderr, "enemyDroneVector _index out of range");
+		return;
+	}
+	enemyDroneVector[_index]->draw();
 }
 
 BoundingBox * EnemyDroneCollection::getBoundingBox(int _index)

@@ -16,8 +16,7 @@ void WallTurretCollection::init(GameEngine::SpriteBatch * _sb, ProjectileCollect
 
 void WallTurretCollection::addWallTurret(glm::vec2 _position, glm::vec2 _velocity)
 {
-	wallTurretVector.push_back(new WallTurret);
-	wallTurretVector[wallTurretVector.size() - 1]->init(_position, _velocity, sb, projectiles);
+	wallTurretVector.push_back(new WallTurret(_position, _velocity, sb, projectiles));
 }
 
 void WallTurretCollection::launch(glm::vec2 _p1, glm::vec2 _p2, float _vel)
@@ -66,6 +65,15 @@ void WallTurretCollection::draw()
 	for (int i = 0; i < wallTurretVector.size(); i++) {
 		wallTurretVector[i]->draw();
 	}
+}
+
+void WallTurretCollection::drawByIndex(int _index)
+{
+	if (_index < 0 || _index >= wallTurretVector.size()) {
+		fprintf(stderr, "wallTurretVector _index out of range");
+		return;
+	}
+	wallTurretVector[_index]->draw();
 }
 
 void WallTurretCollection::changeHealth(int _index, int _amount)

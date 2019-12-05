@@ -15,6 +15,7 @@ public:
 	void update();
 	void setToStatic(int index);
 	void draw();
+	void drawByIndex(int _index);
 	void changeHealth(int _index, int _amount);
 	void remove(int _index);
 	BoundingBox* getBoundingBox(int _index);

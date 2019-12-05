@@ -26,7 +26,6 @@
 
 enum class GameState { PLAY, EXIT };
 
-//Our example game class, just for testing purposes right now
 class MainGame
 {
 public:
@@ -53,7 +52,7 @@ private:
 	EnemyDroneCollection enemyDrones;
 
 	PathFinding pathFinding;
-
+	
 	RandomGeneration randomGeneration;
 
 	GameEngine::CollisionDetection collisionDetection;
