@@ -30,6 +30,11 @@ void ProjectileCollection::drawByIndex(int _index)
 	projectileVector[_index]->draw();
 }
 
+glm::vec2 ProjectileCollection::getPosition(int _index)
+{
+	return projectileVector[_index]->getPosition();
+}
+
 void ProjectileCollection::run()
 {
 	for (int i = 0; i < projectileVector.size(); i++) {

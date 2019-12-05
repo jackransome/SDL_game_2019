@@ -26,6 +26,16 @@
 
 enum class GameState { PLAY, EXIT };
 
+// enum used for keeping track of the order of drawing
+enum CollectionType { wallTurretC, projectileC, playerNoC, enemyDroneC, wallC};
+
+// object used for keeping track of the order of drawing
+struct drawObject {
+	CollectionType collectionType;
+	int collectionIndex;
+	int yValue;
+};
+
 class MainGame
 {
 public:
@@ -38,6 +48,8 @@ private:
 	int closestNodeToPlayerIndex;
 
 	bool playerNodeHasChanged;
+
+	std::vector<drawObject> drawObjectCollection;
 
 	std::vector<glm::vec2> tempPath;
 

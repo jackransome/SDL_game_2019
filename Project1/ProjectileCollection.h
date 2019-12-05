@@ -13,6 +13,7 @@ public:
 	void add(float _x, float _y, float _xVel, float _yVel, DamageType _damageType, float _damageAmount);
 	void draw();
 	void drawByIndex(int _index);
+	glm::vec2 getPosition(int _index);
 	void run();
 	int getVectorSize() { return projectileVector.size(); }
 	Projectile* getProjectile(int _index) { return projectileVector[_index]; }

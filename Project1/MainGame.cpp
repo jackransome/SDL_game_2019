@@ -448,34 +448,85 @@ void MainGame::drawGame() {
 
 	//pathFinding.draw();
 
-	player.draw();
+	// add all drawable objects to the drawObjectCollection vector
+	for (int i = 0; i < walls.getVectorSize(); i++) {
+		drawObject temp;
+		temp.collectionType = wallC;
+		temp.collectionIndex = i;
+		temp.yValue = walls.getBoundingBox(i)->y;
+		drawObjectCollection.push_back(temp);
+	}
+
+	for (int i = 0; i < wallTurrets.getVectorSize(); i++) {
+		drawObject temp;
+		temp.collectionType = wallTurretC;
+		temp.collectionIndex = i;
+		temp.yValue = wallTurrets.getBoundingBox(i)->y;
+		drawObjectCollection.push_back(temp);
+	}
+
+	for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
+		drawObject temp;
+		temp.collectionType = enemyDroneC;
+		temp.collectionIndex = i;
+		temp.yValue = enemyDrones.getBoundingBox(i)->y;
+		drawObjectCollection.push_back(temp);
+	}
+
+	for (int i = 0; i < projectiles.getVectorSize(); i++) {
+		drawObject temp;
+		temp.collectionType = projectileC;
+		temp.collectionIndex = i;
+		temp.yValue = projectiles.getPosition(i).y;
+		drawObjectCollection.push_back(temp);
+	}
+
+	drawObject temp;
+	temp.collectionType = playerNoC;
+	temp.collectionIndex = 0;
+	temp.yValue = player.getBoundingBox()->y;
+	drawObjectCollection.push_back(temp);
+
+	// order drawObjectCollection in terms of y value (largest y first)
+
+	for (int i = 0; i < drawObjectCollection.size() - 1; i++) {
+		for (int j = 0; j < drawObjectCollection.size() - i - 1; j++) {
+			if (drawObjectCollection[j].yValue < drawObjectCollection[j + 1].yValue) {
+				temp = drawObjectCollection[j];
+				drawObjectCollection[j] = drawObjectCollection[j + 1];
+				drawObjectCollection[j + 1] = temp;
+			}
+		}
+	}
+
+	// draw all objects in drawObjectCollection
+
+	for (int i = 0; i < drawObjectCollection.size(); i++) {
+		switch (drawObjectCollection[i].collectionType) {
+		case wallC:
+			walls.drawByIndex(drawObjectCollection[i].collectionIndex);
+			break;
+		case wallTurretC:
+			wallTurrets.drawByIndex(drawObjectCollection[i].collectionIndex);
+			break;
+		case enemyDroneC:
+			enemyDrones.drawByIndex(drawObjectCollection[i].collectionIndex);
+			break;
+		case projectileC:
+			projectiles.drawByIndex(drawObjectCollection[i].collectionIndex);
+			break;
+		case playerNoC:
+			player.draw();
+			break;
+		}
+	}
+	drawObjectCollection.clear();
+	/*player.draw();
 	walls.draw();
 	projectiles.draw();
 	wallTurrets.draw();
 	enemyDrones.draw();
-
-	glm::vec2 temp;
-	for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
-		//temp = enemyDrones.getCenter(i) + glm::vec2(0, 20);
-		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
-	}
-	for (int i = 0; i < wallTurrets.getVectorSize(); i++) {
-		//temp = wallTurrets.getCenter(i) + glm::vec2(0, 20);
-		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
-	}
-	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
-		//temp = pathFinding.getPosition(i) + glm::vec2(0, 20);
-		//drawText.drawString(temp.x, temp.y, std::to_string(i), 1);
-	}
-	//printf("nodes in path: %d\n", tempPath.size());
-	//for (int i = 0; i < tempPath.size() - 1; i++) {
-	//	GameEngine::Color color;
-	//	color.r = 255;
-	//	color.g = 100;
-	//	color.b = 100;
-	//	color.a = 255;
-	//	spriteBatch.drawLine(tempPath[i], tempPath[i + 1], color, 2);
-	//}
+	*/
 
 	spriteBatch.end();
 
