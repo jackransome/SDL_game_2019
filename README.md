@@ -9,3 +9,7 @@ This image shows the contents of the folder. The DLLs folder is not necessary, I
 In addition to having this libraries folder, glew32.dll and SDL2.dll from these libraries must be in the same directory as the compiled .exe in order to run the project
 
 ![image 3](/readme_images/3.PNG)
+
+Current state of things: (click image to watch youtube video)
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/gnPiQyHhYTc/0.jpg)](https://www.youtube.com/watch?v=gnPiQyHhYTc)
