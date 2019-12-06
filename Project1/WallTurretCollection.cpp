@@ -8,10 +8,11 @@ WallTurretCollection::~WallTurretCollection()
 {
 }
 
-void WallTurretCollection::init(GameEngine::SpriteBatch * _sb, ProjectileCollection * _projectiles)
+void WallTurretCollection::init(GameEngine::SpriteBatch * _sb, ProjectileCollection * _projectiles, GameEngine::Camera2D *_cameraPointer)
 {
 	sb = _sb;
 	projectiles = _projectiles;
+	cameraPointer = _cameraPointer;
 }
 
 void WallTurretCollection::addWallTurret(glm::vec2 _position, glm::vec2 _velocity)
@@ -44,6 +45,7 @@ void WallTurretCollection::update()
 			wallTurretVector[i]->run();
 		}
 		if (wallTurretVector[i]->getHealth() <= 0) {
+			cameraPointer->setScreenShakeIntensity(5);
 			remove(i);
 			i--;
 		}

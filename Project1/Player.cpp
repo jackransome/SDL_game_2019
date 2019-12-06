@@ -50,7 +50,7 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 	if (_im->isKeyPressed(SDL_BUTTON_LEFT) && !_im->lastMouseL) {
 		projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 20, damageEnemy, damagePower);
 	}
-	if (_im->isKeyPressed(SDL_BUTTON_RIGHT) && !_im->lastMouseR) {
+	if (_im->isKeyPressed(SDL_BUTTON_RIGHT)/* && !_im->lastMouseR*/) {
 		wallTurrets->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 10);
 	}
 

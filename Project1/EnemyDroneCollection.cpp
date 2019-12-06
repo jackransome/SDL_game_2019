@@ -3,10 +3,11 @@ EnemyDroneCollection::EnemyDroneCollection() {}
 
 EnemyDroneCollection::~EnemyDroneCollection() {}
 
-void EnemyDroneCollection::init(GameEngine::SpriteBatch * _sb, ProjectileCollection * _projectiles)
+void EnemyDroneCollection::init(GameEngine::SpriteBatch * _sb, ProjectileCollection * _projectiles, GameEngine::Camera2D *_cameraPointer)
 {
 	sb = _sb;
 	projectiles = _projectiles;
+	cameraPointer = _cameraPointer;
 }
 
 void EnemyDroneCollection::addEnemyDrone(glm::vec2 _position)
@@ -21,6 +22,7 @@ void EnemyDroneCollection::update()
 		enemyDroneVector[i]->calcNewPos();
 		enemyDroneVector[i]->run();
 		if (enemyDroneVector[i]->getHealth() <= 0) {
+			cameraPointer->setScreenShakeIntensity(5);
 			remove(i);
 			i--;
 		}

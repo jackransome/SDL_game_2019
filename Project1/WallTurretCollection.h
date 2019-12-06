@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <GameEngine/Camera2D.h>
 
 #include "WallTurret.h"
 
@@ -9,7 +10,7 @@ class WallTurretCollection {
 public:
 	WallTurretCollection();
 	~WallTurretCollection();
-	void init(GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles);
+	void init(GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles, GameEngine::Camera2D *_cameraPointer);
 	void addWallTurret(glm::vec2 _position, glm::vec2 _velocity);
 	void launch(glm::vec2 _p1, glm::vec2 _p2, float _vel);
 	void update();
@@ -27,6 +28,7 @@ public:
 	glm::vec2 getPosition(int _index);
 	glm::vec2 getCenter(int _index);
 private:
+	GameEngine::Camera2D *cameraPointer;
 	std::vector<WallTurret*> wallTurretVector;
 	GameEngine::SpriteBatch* sb;
 	ProjectileCollection* projectiles;

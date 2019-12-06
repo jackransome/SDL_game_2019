@@ -12,7 +12,8 @@ private:
 	float doorWidth;
 	float wallThickness;
 	int cellSize;
-
+	int maxRoomSize;
+	int minRoomSize;
 	WallCollection* walls;
 	GameEngine::CollisionDetection* collisionDetection;
 	PathFinding* pathFinding;

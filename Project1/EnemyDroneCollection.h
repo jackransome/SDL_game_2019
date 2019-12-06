@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <GameEngine/Camera2D.h>
 
 #include "EnemyDrone.h"
 
@@ -10,7 +11,7 @@ class EnemyDroneCollection {
 public:
 	EnemyDroneCollection();
 	~EnemyDroneCollection();
-	void init(GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles);
+	void init(GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles, GameEngine::Camera2D *_cameraPointer);
 	void addEnemyDrone(glm::vec2 _position);
 	void update();
 	void draw();
@@ -28,6 +29,7 @@ public:
 	bool hasPath(int _index);
 	float getSensorRange(int _index);
 private:
+	GameEngine::Camera2D *cameraPointer;
 	std::vector<EnemyDrone*> enemyDroneVector;
 	GameEngine::SpriteBatch* sb;
 	ProjectileCollection* projectiles;

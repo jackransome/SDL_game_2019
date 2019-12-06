@@ -8,7 +8,9 @@ void RandomGeneration::init(WallCollection * _walls, PathFinding * _pathFinding,
 	collisionDetection = _collisionDetection;
 	doorWidth = 50;
 	wallThickness = 20;
-	cellSize = 500;
+	cellSize = 800;
+	minRoomSize = 400;
+	maxRoomSize = 750;
 }
 
 void RandomGeneration::generate()
@@ -28,7 +30,7 @@ void RandomGeneration::generate()
 
 
 			//getting a random size
-			roomSize = std::rand() % 320 + 150;
+			roomSize = std::rand() % (maxRoomSize - minRoomSize) + minRoomSize;
 			//creating the room
 			if (i == 0) {
 				leftDoor = false;

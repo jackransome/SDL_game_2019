@@ -54,8 +54,8 @@ void MainGame::initSystems() {
 	//initialising collections
 	projectiles.init(&spriteBatch);
 	walls.init(&spriteBatch);
-	wallTurrets.init(&spriteBatch, &projectiles);
-	enemyDrones.init(&spriteBatch, &projectiles);
+	wallTurrets.init(&spriteBatch, &projectiles, &_camera);
+	enemyDrones.init(&spriteBatch, &projectiles, &_camera);
 	randomGeneration.init(&walls, &pathFinding, &collisionDetection);
 
 	pathFinding.init(&spriteBatch);
@@ -408,7 +408,7 @@ void MainGame::processInput() {
 			break;
 		}
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE) && !_inputManager.lastMouseM) {
+	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)/* && !_inputManager.lastMouseM*/) {
 		enemyDrones.addEnemyDrone(_inputManager.getMouseCoords());
 	}
 
