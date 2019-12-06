@@ -15,6 +15,7 @@
 #include <GameEngine/SpriteBatch.h>
 #include <GameEngine/Camera2D.h>
 #include <GameEngine/DrawText.h>
+#include <GameEngine/Sound.h>
 
 #include "Player.h"
 #include "WallCollection.h"
@@ -88,6 +89,8 @@ private:
 
 	GameEngine::InputManager _inputManager;
 	GameEngine::FpsLimiter _fpsLimiter;
+
+	GameEngine::Sound sound;
 
 	float _maxFPS;
 	float _fps;

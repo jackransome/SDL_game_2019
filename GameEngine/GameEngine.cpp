@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <GL/glew.h>
 #include "GameEngine.h"
 #include <iostream>
@@ -6,6 +7,8 @@ namespace GameEngine {
 	int init() {
 		//Initialize SDL
 		SDL_Init(SDL_INIT_EVERYTHING);
+
+		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 		//Tell SDL that we want a double buffered window so we dont get
 		//any flickering

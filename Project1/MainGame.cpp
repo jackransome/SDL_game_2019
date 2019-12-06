@@ -33,6 +33,8 @@ void MainGame::run() {
 	//This only returns when the game ends
 	gameLoop();
 
+	sound.unloadAll();
+
 	pathFinding.clearNodeData();
 }
 //Initialize SDL and Opengl and whatever else we need
@@ -152,6 +154,8 @@ void MainGame::initSystems() {
 	pathFinding.fillNeighbors();
 	//pathFinding.optimiseNetwork();
 	int x = 0;
+	int j = sound.loadSound("trac1.wav");
+	sound.playSound(j);
 }
 
 void MainGame::initShaders() {
@@ -161,7 +165,6 @@ void MainGame::initShaders() {
 	_colorProgram.addAttribute("vertexUV");
 	_colorProgram.addAttribute("test");
 	_colorProgram.linkShaders();
-
 }
 
 //This is the main game loop for our program
@@ -329,7 +332,6 @@ void MainGame::updateGame() {
 		}
 
 	}
-
 
 	for (int i = 0; i < projectiles.getVectorSize(); i++) {
 		if (projectiles.getDamageType(i) == damageFriendly) {
