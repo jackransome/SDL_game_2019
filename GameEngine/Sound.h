@@ -9,6 +9,7 @@ namespace GameEngine {
 		~Sound();
 		int loadSound(char *path);
 		int playSound(int index);
+		int loopSound(int index);
 		void unloadSound(int index);
 		void unloadAll();
 	private:

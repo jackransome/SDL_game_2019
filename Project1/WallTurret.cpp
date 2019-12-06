@@ -42,16 +42,25 @@ void WallTurret::draw()
 	if (isStatic) {
 		if (target) {
 			shootingSprite.run();
-			shootingSprite.draw(boundingBox.x, boundingBox.y);
+			for (int i = 0; i < 15; i++) {
+				shootingSprite.draw(boundingBox.x, boundingBox.y + 1);
+			}
+			//shootingSprite.draw(boundingBox.x, boundingBox.y);
 		}
 		else {
 			staticSprite.run();
-			staticSprite.draw(boundingBox.x, boundingBox.y);
+			for (int i = 0; i < 15; i++) {
+				staticSprite.draw(boundingBox.x, boundingBox.y + i);
+			}
+			//staticSprite.draw(boundingBox.x, boundingBox.y);
 		}
 	}
 	else {
 		movingSprite.run();
-		movingSprite.draw(boundingBox.x, boundingBox.y);
+		for (int i = 0; i < 15; i++) {
+			movingSprite.draw(boundingBox.x, boundingBox.y + i);
+		}
+		//movingSprite.draw(boundingBox.x, boundingBox.y);
 	}
 }
 

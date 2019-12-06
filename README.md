@@ -10,6 +10,6 @@ In addition to having this libraries folder, glew32.dll,SDL2.dll and SDL2_mixer.
 
 ![image 3](/readme_images/3.PNG)
 
-Current state of things(OLD): (click image to watch youtube video)
+Current state of things: (click image to watch youtube video)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/gnPiQyHhYTc/0.jpg)](https://www.youtube.com/watch?v=gnPiQyHhYTc)
+[![IMAGE ALT TEXT HERE](https://youtu.be/nOu1zGjqPL8)

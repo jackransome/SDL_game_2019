@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1200),
-	_screenHeight(1000),
+	_screenWidth(1920),
+	_screenHeight(1080),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -156,6 +156,7 @@ void MainGame::initSystems() {
 	int x = 0;
 	int j = sound.loadSound("trac1.wav");
 	sound.playSound(j);
+	sound.loopSound(j); 
 }
 
 void MainGame::initShaders() {

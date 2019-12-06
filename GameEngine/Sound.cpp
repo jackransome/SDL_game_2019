@@ -21,6 +21,14 @@ namespace GameEngine {
 		}
 		return Mix_PlayMusic(soundsArray[index], 1);
 	}
+	//continuously loop a sound previously loaded
+	int Sound::loopSound(int index) {
+		if (soundsArray[index] == nullptr) {
+			std::cout << "Invalid sound index\n" << std::endl;
+			return 0;
+		}
+		return Mix_PlayMusic(soundsArray[index], -1);
+	}
 	//unload a sound previously loads
 	void Sound::unloadSound(int index) {
 		if (soundsArray[index] == nullptr) {
