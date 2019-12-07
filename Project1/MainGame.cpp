@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1920),
-	_screenHeight(1080),
+	_screenWidth(800),
+	_screenHeight(600),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -232,13 +232,13 @@ void MainGame::updateGame() {
 	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex)
 
 	// drone drone collision
-	/*for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
+	for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
 		for (int j = 0; j < enemyDrones.getVectorSize(); j++) {
 			if (j != i && collisionDetection.isCheckRequired(enemyDrones.getBoundingBox(i), enemyDrones.getBoundingBox(j))) {
 				collisionDetection.correctPosition(enemyDrones.getBoundingBox(i), enemyDrones.getBoundingBox(j));
 			}
 		}
-	}*/
+	}
 	for (int i = 0; i < walls.getVectorSize(); i++) {
 		//player wall collision;
 		if (collisionDetection.isCheckRequired(player.getBoundingBox(), walls.getBoundingBox(i))) {
@@ -409,7 +409,7 @@ void MainGame::processInput() {
 			break;
 		}
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_MIDDLE)/* && !_inputManager.lastMouseM*/) {
+	if (_inputManager.isKeyPressed(SDLK_f)/* && !_inputManager.lastMouseM*/) {
 		enemyDrones.addEnemyDrone(_inputManager.getMouseCoords());
 	}
 
