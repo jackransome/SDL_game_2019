@@ -19,10 +19,14 @@ void EnemyDrone::init(glm::vec2 _position, GameEngine::SpriteBatch * _sb, Projec
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
 	projectileSpeed = 6;
-	mainSprite.init(sb, 8, 8, 2, 4, 8, 0, 0);
-	mainSprite.loadTexture("textures/enemyDroneMain.png");
-	shootingSprite.init(sb, 8, 8, 2, 2, 8, 0, 0);
-	shootingSprite.loadTexture("textures/enemyDroneShooting.png");
+	//mainSprite.init(sb, 8, 8, 2, 4, 8, 0, 0);
+	//mainSprite.loadTexture("textures/enemyDroneMain.png");
+	//shootingSprite.init(sb, 8, 8, 2, 2, 8, 0, 0);
+	//shootingSprite.loadTexture("textures/enemyDroneShooting.png");
+	mainSprite.init(sb, 8, 16, 2, 2, 8, 0, 0);
+	mainSprite.loadTexture("textures/enemyDroneMain_2.png");
+	shootingSprite.init(sb, 8, 16, 2, 2, 8, 0, 0);
+	shootingSprite.loadTexture("textures/enemyDroneShooting_2.png");
 	shootCoolDown = 0;
 	shooting = false;
 	shootRange = 200;
@@ -119,17 +123,11 @@ void EnemyDrone::draw()
 {
 	if (shooting) {
 		shootingSprite.run();
-		for (int i = 0; i < 15; i++) {
-			shootingSprite.draw(boundingBox.x, boundingBox.y + i);
-		}
-		//shootingSprite.draw(boundingBox.x, boundingBox.y);
+		shootingSprite.draw(boundingBox.x, boundingBox.y+16);
 	}
 	else {
 		mainSprite.run();
-		for (int i = 0; i < 15; i++) {
-			mainSprite.draw(boundingBox.x, boundingBox.y + i);
-		}
-		//mainSprite.draw(boundingBox.x, boundingBox.y);
+		mainSprite.draw(boundingBox.x, boundingBox.y+16);
 	}
 }
 
