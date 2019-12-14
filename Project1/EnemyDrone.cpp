@@ -186,6 +186,10 @@ bool EnemyDrone::hasTarget()
 	return false;
 }
 
+Path * EnemyDrone::getPath(){
+	return path;
+}
+
 void EnemyDrone::shootAt(BoundingBox _boundingBox)
 {
 	projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), glm::vec2(_boundingBox.x + _boundingBox.w / 2, _boundingBox.y + _boundingBox.h / 2), projectileSpeed, damageFriendly, damagePower);

@@ -211,6 +211,10 @@
     <Image Include="icon1.ico" />
     <Image Include="icon2.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Project1\Shaders\colorShading.frag" />
+    <None Include="..\Project1\Shaders\colorShading.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

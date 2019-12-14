@@ -26,10 +26,12 @@ public:
 	float getSensorRange();
 	bool hasPath();
 	bool hasTarget();
+	Path* getPath();
+
 private:
 
-	float damagePower;
 	Path* path;
+	float damagePower;
 	int shootCoolDown;
 	void shootAt(BoundingBox _boundingBox);
 	BoundingBox* target;

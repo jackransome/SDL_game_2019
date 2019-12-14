@@ -22,7 +22,7 @@ void EnemyDroneCollection::update()
 		enemyDroneVector[i]->calcNewPos();
 		enemyDroneVector[i]->run();
 		if (enemyDroneVector[i]->getHealth() <= 0) {
-			cameraPointer->setScreenShakeIntensity(5);
+			cameraPointer->setScreenShakeIntensity(6);
 			remove(i);
 			i--;
 		}
@@ -97,6 +97,10 @@ bool EnemyDroneCollection::hasPath(int _index)
 float EnemyDroneCollection::getSensorRange(int _index)
 {
 	return enemyDroneVector[_index]->getSensorRange();
+}
+
+Path * EnemyDroneCollection::getPath(int _index){
+	return enemyDroneVector[_index]->getPath();
 }
 
 void EnemyDroneCollection::target(int _index, BoundingBox* _boundingBox)

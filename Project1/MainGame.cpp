@@ -12,8 +12,8 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(800),
-	_screenHeight(600),
+	_screenWidth(1920),
+	_screenHeight(1080),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
@@ -231,10 +231,10 @@ void MainGame::updateGame() {
 
 	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex)
 
-	//wallTurret wall collision
+	//wallTurret wallTurret collision
 	for (int i = 0; i < wallTurrets.getVectorSize(); i++) {
 		for (int j = 0; j < wallTurrets.getVectorSize(); j++) {
-			if (!wallTurrets.getStatic(j) && collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i))) {
+			if (!wallTurrets.getStatic(j) && wallTurrets.getStatic(i) && collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i))) {
 				if (collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i)) && collisionDetection.correctPosition(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i))) {
 					wallTurrets.setToStatic(j);
 					continue;
@@ -340,8 +340,46 @@ void MainGame::updateGame() {
 				}
 			}
 			if (index != -1) {
-				enemyDrones.setPath(i, pathFinding.getPath(index, closestNodeToPlayerIndex));
+				Path* tempPath = pathFinding.getPath(index, closestNodeToPlayerIndex);
+				//checking if the path to the second node is blocked:
+				while (tempPath->next) {
+					bool isBlocked = false;
+					for (int j = 0; j < walls.getVectorSize(); j++) {
+						if (collisionDetection.lineRectCollision(enemyDrones.getCenter(i), tempPath->next->position, walls.getBoundingBox(j))) {
+							isBlocked = true;
+							break;
+						}
+					}
+					if (!isBlocked) {
+						tempPath = tempPath->next;
+					}
+					else {
+						break;
+					}
+				}
+				enemyDrones.setPath(i, tempPath);
 			}
+		}
+		else if (enemyDrones.hasPath(i)) {
+			//fixing paths is the drone can see further ahead nodes (ONLY LOOKS ONE NODE AHEAD)
+			Path* tempPath = enemyDrones.getPath(i);
+			//checking if the path to the second node is blocked:
+			while (tempPath->next) {
+				bool isBlocked = false;
+				for (int j = 0; j < walls.getVectorSize(); j++) {
+					if (collisionDetection.lineRectCollision(enemyDrones.getCenter(i), tempPath->next->position, walls.getBoundingBox(j))) {
+						isBlocked = true;
+						break;
+					}
+				}
+				if (!isBlocked) {
+					tempPath = tempPath->next;
+				}
+				else {
+					break;
+				}
+			}
+			enemyDrones.setPath(i, tempPath);
 		}
 
 	}

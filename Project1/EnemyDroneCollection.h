@@ -28,6 +28,7 @@ public:
 	void setPath(int _index, Path* _path);
 	bool hasPath(int _index);
 	float getSensorRange(int _index);
+	Path* getPath(int _index);
 private:
 	GameEngine::Camera2D *cameraPointer;
 	std::vector<EnemyDrone*> enemyDroneVector;
