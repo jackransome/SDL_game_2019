@@ -123,11 +123,11 @@ void EnemyDrone::draw()
 {
 	if (shooting) {
 		shootingSprite.run();
-		shootingSprite.draw(boundingBox.x, boundingBox.y+16);
+		shootingSprite.draw(boundingBox.x, boundingBox.y);
 	}
 	else {
 		mainSprite.run();
-		mainSprite.draw(boundingBox.x, boundingBox.y+16);
+		mainSprite.draw(boundingBox.x, boundingBox.y);
 	}
 }
 

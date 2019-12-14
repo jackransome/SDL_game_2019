@@ -13,8 +13,8 @@ WallTurret::WallTurret(glm::vec2 _position, glm::vec2 _velocity, GameEngine::Spr
 	isStatic = false;
 	movingSprite.init(sb, 8, 8, 2, 4, 8, 0, 0);
 	movingSprite.loadTexture("textures/wallTurretMoving.png");
-	staticSprite.init(sb, 8, 8, 2, 2, 32, 0, 0);
-	staticSprite.loadTexture("textures/wallTurretStatic.png");
+	staticSprite.init(sb, 8, 16, 2, 2, 32, 0, 0);
+	staticSprite.loadTexture("textures/wallTurretStatic_2.png");
 	shootingSprite.init(sb, 8, 8, 2, 2, 8, 0, 0);
 	shootingSprite.loadTexture("textures/wallTurretShooting.png");
 	shootCoolDown = 0;
@@ -49,10 +49,7 @@ void WallTurret::draw()
 		}
 		else {
 			staticSprite.run();
-			for (int i = 0; i < 15; i++) {
-				staticSprite.draw(boundingBox.x, boundingBox.y + i);
-			}
-			//staticSprite.draw(boundingBox.x, boundingBox.y);
+			staticSprite.draw(boundingBox.x, boundingBox.y);
 		}
 	}
 	else {

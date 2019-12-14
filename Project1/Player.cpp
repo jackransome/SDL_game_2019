@@ -20,6 +20,7 @@ void Player::init(float _x, float _y, GameEngine::SpriteBatch* _sb, GameEngine::
 	boundingBox.yv = 0;
 	speed = 8;
 	health = 10;
+	damagePower = 2;
 	mainSprite.init(sb, 16, 16, 1, 4, 16, 0, 0);
 	mainSprite.loadTexture("textures/player1.png");
 }

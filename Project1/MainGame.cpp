@@ -231,6 +231,17 @@ void MainGame::updateGame() {
 
 	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex)
 
+	//wallTurret wall collision
+	for (int i = 0; i < wallTurrets.getVectorSize(); i++) {
+		for (int j = 0; j < wallTurrets.getVectorSize(); j++) {
+			if (!wallTurrets.getStatic(j) && collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i))) {
+				if (collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i)) && collisionDetection.correctPosition(wallTurrets.getBoundingBox(j), wallTurrets.getBoundingBox(i))) {
+					wallTurrets.setToStatic(j);
+					continue;
+				}
+			}
+		}
+	}
 	// drone drone collision
 	for (int i = 0; i < enemyDrones.getVectorSize(); i++) {
 		for (int j = 0; j < enemyDrones.getVectorSize(); j++) {
@@ -256,6 +267,7 @@ void MainGame::updateGame() {
 			if (!wallTurrets.getStatic(j) && collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
 				if (collisionDetection.isCheckRequired(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i)) && collisionDetection.correctPosition(wallTurrets.getBoundingBox(j), walls.getBoundingBox(i))) {
 					wallTurrets.setToStatic(j);
+					continue;
 				}
 			}
 		}
