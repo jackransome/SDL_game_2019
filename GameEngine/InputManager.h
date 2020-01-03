@@ -16,11 +16,13 @@ public:
 
     void pressKey(unsigned int keyID);
     void releaseKey(unsigned int keyID);
+	void setOldKeyMap();
 
 	void setMouseCoords(float x, float y);
 	void setTrueMouseCoords(float x, float y);
 	void addMouseCoords(glm::vec2 _pos);
     bool isKeyPressed(unsigned int keyID);
+	bool wasKeyPressed(unsigned int keyID);
 	bool lastMouseL;
 	bool lastMouseR;
 	bool lastMouseM;
@@ -28,7 +30,8 @@ public:
 	glm::vec2 getMouseCoords();
 	glm::vec2 getTrueMouseCoords();
 private:
-    std::unordered_map<unsigned int, bool> _keyMap;
+    std::unordered_map<unsigned int, bool> keyMap;
+	std::unordered_map<unsigned int, bool> oldKeyMap;
 	glm::vec2 _mouseCoords;
 	glm::vec2 _trueMouseCoords;
 };

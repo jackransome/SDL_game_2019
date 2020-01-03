@@ -21,6 +21,7 @@
 #include "WallCollection.h"
 #include "ProjectileCollection.h"
 #include "WallTurretCollection.h"
+#include "GeneratorCollection.h"
 #include "EnemyDroneCollection.h"
 #include "PathFinding.h"
 #include "RandomGeneration.h"
@@ -28,7 +29,7 @@
 enum class GameState { PLAY, EXIT };
 
 // enum used for keeping track of the order of drawing
-enum CollectionType { wallTurretC, projectileC, playerNoC, enemyDroneC, wallC};
+enum CollectionType { wallTurretC, projectileC, playerNoC, enemyDroneC, wallC, generatorC};
 
 // object used for keeping track of the order of drawing
 struct drawObject {
@@ -64,6 +65,8 @@ private:
 
 	EnemyDroneCollection enemyDrones;
 
+	GeneratorCollection generators;
+
 	PathFinding pathFinding;
 	
 	RandomGeneration randomGeneration;
@@ -81,14 +84,14 @@ private:
 	GameState _gameState;
 
 	GameEngine::GLSLProgram _colorProgram;
-	GameEngine::Camera2D _camera;
+	GameEngine::Camera2D camera;
 
 	GameEngine::SpriteBatch spriteBatch;
 
 	GameEngine::DrawText drawText;
 
-	GameEngine::InputManager _inputManager;
-	GameEngine::FpsLimiter _fpsLimiter;
+	GameEngine::InputManager inputManager;
+	GameEngine::FpsLimiter fpsLimiter;
 
 	GameEngine::Sound sound;
 

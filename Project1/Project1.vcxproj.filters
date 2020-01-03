@@ -57,6 +57,12 @@
     <ClInclude Include="Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratorCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,6 +102,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RandomGeneration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratorCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

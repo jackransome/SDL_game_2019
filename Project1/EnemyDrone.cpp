@@ -19,10 +19,6 @@ void EnemyDrone::init(glm::vec2 _position, GameEngine::SpriteBatch * _sb, Projec
 	boundingBox.xv = 0;
 	boundingBox.yv = 0;
 	projectileSpeed = 6;
-	//mainSprite.init(sb, 8, 8, 2, 4, 8, 0, 0);
-	//mainSprite.loadTexture("textures/enemyDroneMain.png");
-	//shootingSprite.init(sb, 8, 8, 2, 2, 8, 0, 0);
-	//shootingSprite.loadTexture("textures/enemyDroneShooting.png");
 	mainSprite.init(sb, 8, 16, 2, 2, 8, 0, 0);
 	mainSprite.loadTexture("textures/enemyDroneMain_2.png");
 	shootingSprite.init(sb, 8, 16, 2, 2, 8, 0, 0);
@@ -53,9 +49,6 @@ void EnemyDrone::run()
 
 	// if drone has a target ( does not happen until drone is within sensor range )
 	if (target) {
-		if (pathSet) {
-
-		}
 		pathSet = false;
 		float dist = sqrt(pow(target->x - boundingBox.x, 2) + pow(target->y - boundingBox.y, 2));
 		if (dist < shootRange) {

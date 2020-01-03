@@ -13,11 +13,11 @@ public:
 	void init(GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles, GameEngine::Camera2D *_cameraPointer);
 	void addWallTurret(glm::vec2 _position, glm::vec2 _velocity);
 	void launch(glm::vec2 _p1, glm::vec2 _p2, float _vel);
-	void update();
+	void run();
 	void setToStatic(int index);
 	void draw();
 	void drawByIndex(int _index);
-	void changeHealth(int _index, int _amount);
+	void changeHealth(int _index, float _amount);
 	void remove(int _index);
 	BoundingBox* getBoundingBox(int _index);
 	bool getStatic(int _index);

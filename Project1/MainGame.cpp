@@ -12,13 +12,13 @@
 
 //Constructor, just initializes private member variables
 MainGame::MainGame() :
-	_screenWidth(1920),
-	_screenHeight(1080),
+	_screenWidth(800),
+	_screenHeight(600),
 	_time(0.0f),
 	_gameState(GameState::PLAY),
 	_maxFPS(60.0f)
 {
-	_camera.init(_screenWidth, _screenHeight, 0, 0);
+	camera.init(_screenWidth, _screenHeight, 0, 0);
 }
 
 MainGame::~MainGame()
@@ -48,32 +48,37 @@ void MainGame::initSystems() {
 
 	spriteBatch.init();
 	drawText.init(&spriteBatch);
-	_fpsLimiter.init(_maxFPS);
-	_camera.setScreenShakeIntensity(0);
+	fpsLimiter.init(_maxFPS);
+	camera.setScreenShakeIntensity(0);
 
 	//initialising collections
 	projectiles.init(&spriteBatch);
 	walls.init(&spriteBatch);
-	wallTurrets.init(&spriteBatch, &projectiles, &_camera);
-	enemyDrones.init(&spriteBatch, &projectiles, &_camera);
+	wallTurrets.init(&spriteBatch, &projectiles, &camera);
+	enemyDrones.init(&spriteBatch, &projectiles, &camera);
+	generators.init(&spriteBatch);
 	randomGeneration.init(&walls, &pathFinding, &collisionDetection);
 
+	//initialising the pathfinding
 	pathFinding.init(&spriteBatch);
 
 	//initialising the player
-	player.init(0, 0, &spriteBatch, &_camera, &projectiles, &wallTurrets);
-	bool collides = false;
+	player.init(0, 0, &spriteBatch, &camera, &projectiles, &wallTurrets);
 
-	bool random = true;
+	//level generation settings
+	bool collides = false;
+	bool random = false;
 	int amountOfWalls = 30;
+	//level generation
 	if (!random) {
-		walls.addWall(100, 0, 50, 200);
-		walls.addWall(200, 0, 50, 200);
-		walls.addWall(0, 250, 3500, 50);
+		randomGeneration.generate();
+		//walls.addWall(100, 0, 50, 200);
+		//walls.addWall(200, 0, 50, 200);
+		//walls.addWall(0, 250, 3500, 50);
 	}
 	else {
 		//randomly generating walls
-		/*while (walls.getVectorSize() < amountOfWalls) {
+		while (walls.getVectorSize() < amountOfWalls) {
 			walls.addWall(rand() % 1000 - 500, rand() % 1000 - 500, rand() % 200 + 50, rand() % 200 + 50);
 			for (int i = 0; i < walls.getVectorSize()-1; i++) {
 				BoundingBox temp1 = *walls.getBoundingBox(walls.getVectorSize() - 1);
@@ -86,51 +91,49 @@ void MainGame::initSystems() {
 					break;
 				}
 			}
-		}*/
-		randomGeneration.generate();
-	}
+		}
+		//adding nodes
+		for (int i = 0; i < walls.getVectorSize(); i++) {
+			BoundingBox* temp = walls.getBoundingBox(i);
+			for (int j = 0; j < walls.getVectorSize(); j++) {
+				if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 20, temp->y - 20), walls.getBoundingBox(j))) {
+					collides = true;
+				}
+			}
+			if (!collides) {
+				pathFinding.addNode(glm::vec2(temp->x - 20, temp->y - 20));
+			}
+			collides = false;
+			for (int j = 0; j < walls.getVectorSize(); j++) {
+				if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y + temp->h + 20), walls.getBoundingBox(j))) {
+					collides = true;
+				}
+			}
+			if (!collides) {
+				pathFinding.addNode(glm::vec2(temp->x - 20, temp->y + temp->h + 20));
+			}
+			collides = false;
+			for (int j = 0; j < walls.getVectorSize(); j++) {
+				if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 20, temp->y + temp->h + 20), walls.getBoundingBox(j))) {
+					collides = true;
+				}
+			}
+			if (!collides) {
+				pathFinding.addNode(glm::vec2(temp->x + temp->w + 20, temp->y + temp->h + 20));
+			}
+			collides = false;
+			for (int j = 0; j < walls.getVectorSize(); j++) {
+				if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 20, temp->y - 20), walls.getBoundingBox(j))) {
+					collides = true;
+				}
+			}
+			if (!collides) {
+				pathFinding.addNode(glm::vec2(temp->x + temp->w + 20, temp->y - 20));
+			}
 
-	/*for (int i = 0; i < walls.getVectorSize(); i++) {
-		BoundingBox* temp = walls.getBoundingBox(i);
-		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 20, temp->y - 20), walls.getBoundingBox(j))) {
-				collides = true;
-			}
 		}
-		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x - 20, temp->y - 20));
-		}
-		collides = false;
-		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x - 10, temp->y + temp->h + 20), walls.getBoundingBox(j))) {
-				collides = true;
-			}
-		}
-		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x - 20, temp->y + temp->h + 20));
-		}
-		collides = false;
-		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 20, temp->y + temp->h + 20), walls.getBoundingBox(j))) {
-				collides = true;
-			}
-		}
-		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x + temp->w + 20, temp->y + temp->h + 20));
-		}
-		collides = false;
-		for (int j = 0; j < walls.getVectorSize(); j++) {
-			if (collisionDetection.pointRectangleIntersect(glm::vec2(temp->x + temp->w + 20, temp->y - 20), walls.getBoundingBox(j))) {
-				collides = true;
-			}
-		}
-		if (!collides) {
-			pathFinding.addNode(glm::vec2(temp->x + temp->w + 20, temp->y - 20));
-		}
-		
-	}*/
+	}
 	//connecting nodes that can reach each other
-	
 	for (int i = 0; i < pathFinding.getVectorSize(); i++) {
 		for (int j = i; j < pathFinding.getVectorSize(); j++) {
 			collides = false;
@@ -151,6 +154,7 @@ void MainGame::initSystems() {
 			}
 		}
 	}
+	
 	pathFinding.fillNeighbors();
 	//pathFinding.optimiseNetwork();
 	int x = 0;
@@ -174,21 +178,21 @@ void MainGame::gameLoop() {
 	//Will loop until we set _gameState to EXIT
 	while (_gameState != GameState::EXIT) {
 
-		_fpsLimiter.begin();
+		fpsLimiter.begin();
 
 		processInput();
 		_time += 0.1;
 
 
-		_camera.update();
-		//std::cout << _fps << std::endl;
+		camera.update();
+
 		updateGame();
 
 		drawGame();
 
-		_fps = _fpsLimiter.end();
+		_fps = fpsLimiter.end();
 
-		//print only once every 10 frames
+		//print only once every 1000 frames
 		static int frameCounter = 0;
 		frameCounter++;
 		if (frameCounter == 1000) {
@@ -199,10 +203,10 @@ void MainGame::gameLoop() {
 }
 void MainGame::updateGame() {
 
-	player.handleInput(&_inputManager);
+	player.handleInput(&inputManager);
 
-	glm::vec2 mousePos = _inputManager.getMouseCoords();
-	glm::vec2 cameraPos = _camera.getPosition();
+	glm::vec2 mousePos = inputManager.getMouseCoords();
+	glm::vec2 cameraPos = camera.getPosition();
 
 	//get closest node to player that the player can see
 	float minDistance = 1000000;
@@ -220,6 +224,7 @@ void MainGame::updateGame() {
 			}
 		}
 	}
+
 	if (closestNodeToPlayerIndex != index) {
 		closestNodeToPlayerIndex = index;
 		playerNodeHasChanged = true;
@@ -227,9 +232,6 @@ void MainGame::updateGame() {
 	else {
 		playerNodeHasChanged = false;
 	}
-	
-
-	//tempPath = pathFinding.getPath(0, closestNodeToPlayerIndex)
 
 	//wallTurret wallTurret collision
 	for (int i = 0; i < wallTurrets.getVectorSize(); i++) {
@@ -339,7 +341,9 @@ void MainGame::updateGame() {
 					}
 				}
 			}
+			// if there is a node reachable by the drone
 			if (index != -1) {
+				// calculate path from that node to the one closest to the player
 				Path* tempPath = pathFinding.getPath(index, closestNodeToPlayerIndex);
 				//checking if the path to the second node is blocked:
 				while (tempPath->next) {
@@ -350,6 +354,7 @@ void MainGame::updateGame() {
 							break;
 						}
 					}
+					// if it isnt blocked, make it the path (removing the first node)
 					if (!isBlocked) {
 						tempPath = tempPath->next;
 					}
@@ -357,11 +362,12 @@ void MainGame::updateGame() {
 						break;
 					}
 				}
+				// finally set the drones path
 				enemyDrones.setPath(i, tempPath);
 			}
 		}
 		else if (enemyDrones.hasPath(i)) {
-			//fixing paths is the drone can see further ahead nodes (ONLY LOOKS ONE NODE AHEAD)
+			//fixing paths if the drone can see further ahead nodes (ONLY LOOKS ONE NODE AHEAD)
 			Path* tempPath = enemyDrones.getPath(i);
 			//checking if the path to the second node is blocked:
 			while (tempPath->next) {
@@ -381,7 +387,6 @@ void MainGame::updateGame() {
 			}
 			enemyDrones.setPath(i, tempPath);
 		}
-
 	}
 
 	for (int i = 0; i < projectiles.getVectorSize(); i++) {
@@ -412,12 +417,21 @@ void MainGame::updateGame() {
 
 	player.calcNewPos();
 	projectiles.run();
-	wallTurrets.update();
-	enemyDrones.update();
+	generators.run();
+	wallTurrets.run();
+	enemyDrones.run();
 
-	_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
-	_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
-	_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
+	inputManager.lastMouseR = inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
+	inputManager.lastMouseL = inputManager.isKeyPressed(SDL_BUTTON_LEFT);
+	inputManager.lastMouseM = inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
+
+	if (inputManager.isKeyPressed(SDLK_f) && !inputManager.wasKeyPressed(SDLK_f)) {
+		enemyDrones.addEnemyDrone(inputManager.getMouseCoords());
+	}
+	if (inputManager.isKeyPressed(SDLK_g) && !inputManager.wasKeyPressed(SDLK_g)) {
+		generators.add(inputManager.getMouseCoords());
+	}
+
 }
 //Processes input with SDL
 void MainGame::processInput() {
@@ -426,14 +440,13 @@ void MainGame::processInput() {
 	const float CAMERA_SPEED = 2.0f;
 	const float SCALE_SPEED = 0.1f;
 
-	glm::vec2 cameraPos = _camera.getPosition();
+	glm::vec2 cameraPos = camera.getPosition();
 
-	glm::vec2 trueMouseCoords = _inputManager.getTrueMouseCoords();
-	_inputManager.setMouseCoords(trueMouseCoords.x + cameraPos.x - _screenWidth / 2, -(trueMouseCoords.y - cameraPos.y - _screenHeight / 2));
+	glm::vec2 trueMouseCoords = inputManager.getTrueMouseCoords();
+	inputManager.setMouseCoords(trueMouseCoords.x + cameraPos.x - _screenWidth / 2, -(trueMouseCoords.y - cameraPos.y - _screenHeight / 2));
 
-	//_inputManager.lastMouseR = _inputManager.isKeyPressed(SDL_BUTTON_RIGHT);
-	//_inputManager.lastMouseL = _inputManager.isKeyPressed(SDL_BUTTON_LEFT);
-	//_inputManager.lastMouseM = _inputManager.isKeyPressed(SDL_BUTTON_MIDDLE);
+	//sets the old keymap
+	inputManager.setOldKeyMap();
 
 	//Will keep looping until there are no more events to process
 	while (SDL_PollEvent(&evnt)) {
@@ -442,27 +455,23 @@ void MainGame::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
-			cameraPos = _camera.getPosition();
-			_inputManager.setTrueMouseCoords(evnt.motion.x, evnt.motion.y);
+			cameraPos = camera.getPosition();
+			inputManager.setTrueMouseCoords(evnt.motion.x, evnt.motion.y);
 			break;
 		case SDL_KEYDOWN:
-			_inputManager.pressKey(evnt.key.keysym.sym);
+			inputManager.pressKey(evnt.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
-			_inputManager.releaseKey(evnt.key.keysym.sym);
+			inputManager.releaseKey(evnt.key.keysym.sym);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			_inputManager.pressKey(evnt.button.button);
+			inputManager.pressKey(evnt.button.button);
 			break;
 		case SDL_MOUSEBUTTONUP:
-			_inputManager.releaseKey(evnt.button.button);
+			inputManager.releaseKey(evnt.button.button);
 			break;
 		}
 	}
-	if (_inputManager.isKeyPressed(SDLK_f)/* && !_inputManager.lastMouseM*/) {
-		enemyDrones.addEnemyDrone(_inputManager.getMouseCoords());
-	}
-
 }
 
 //Draws the game using the almighty OpenGL
@@ -472,10 +481,8 @@ void MainGame::drawGame() {
 	//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//drawing the background
 	glLineWidth(1);
-
-	glm::mat4 camera = _camera.getCameraMatrix();
-
 	glColor3f(0.0, 0.0, 0.0);
 	glBegin(GL_POLYGON);
 	glVertex2f(-1, -1);
@@ -483,6 +490,7 @@ void MainGame::drawGame() {
 	glVertex2f(1, 1);
 	glVertex2f(1, -1);
 	glEnd();
+
 	//Enable the shader
 	_colorProgram.use();
 	//We are using texture unit 0
@@ -494,7 +502,7 @@ void MainGame::drawGame() {
 
 	//Set the camera matrixx
 	GLint pLocation = _colorProgram.getUniformLocation("P");
-	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+	glm::mat4 cameraMatrix = camera.getCameraMatrix();
 
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	spriteBatch.begin();
@@ -534,6 +542,14 @@ void MainGame::drawGame() {
 		drawObjectCollection.push_back(temp);
 	}
 
+	for (int i = 0; i < generators.getVectorSize(); i++) {
+		drawObject temp;
+		temp.collectionType = generatorC;
+		temp.collectionIndex = i;
+		temp.yValue = generators.getPosition(i).y;
+		drawObjectCollection.push_back(temp);
+	}
+
 	drawObject temp;
 	temp.collectionType = playerNoC;
 	temp.collectionIndex = 0;
@@ -552,7 +568,7 @@ void MainGame::drawGame() {
 		}
 	}
 
-	// draw all objects in drawObjectCollection
+	// draw all objects in drawObjectCollection in order of y
 
 	for (int i = 0; i < drawObjectCollection.size(); i++) {
 		switch (drawObjectCollection[i].collectionType) {
@@ -568,30 +584,27 @@ void MainGame::drawGame() {
 		case projectileC:
 			projectiles.drawByIndex(drawObjectCollection[i].collectionIndex);
 			break;
+		case generatorC:
+			generators.drawByIndex(drawObjectCollection[i].collectionIndex);
+			break;
 		case playerNoC:
 			player.draw();
 			break;
 		}
 	}
 	drawObjectCollection.clear();
-	/*player.draw();
-	walls.draw();
-	projectiles.draw();
-	wallTurrets.draw();
-	enemyDrones.draw();
-	*/
 
 	spriteBatch.end();
 
 	spriteBatch.renderBatch();
 
-	//unbind the texture
+	// unbind the texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 
-	//disable the shader
+	// disable the shader
 	_colorProgram.unuse();
 
-	//Swap our buffer and draw everything to the screen!
+	// swap the buffer and draw to the screen
 	_window.swapBuffer();
 }

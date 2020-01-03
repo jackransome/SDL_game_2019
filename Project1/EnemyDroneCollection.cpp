@@ -16,7 +16,7 @@ void EnemyDroneCollection::addEnemyDrone(glm::vec2 _position)
 	enemyDroneVector[enemyDroneVector.size() - 1]->init(_position, sb, projectiles);
 }
 
-void EnemyDroneCollection::update()
+void EnemyDroneCollection::run()
 {
 	for (int i = 0; i < enemyDroneVector.size(); i++) {
 		enemyDroneVector[i]->calcNewPos();
