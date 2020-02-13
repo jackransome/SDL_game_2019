@@ -67,7 +67,7 @@ void MainGame::initSystems() {
 
 	//level generation settings
 	bool collides = false;
-	bool random = false;
+	bool random = true;
 	int amountOfWalls = 30;
 	//level generation
 	if (!random) {
@@ -159,8 +159,8 @@ void MainGame::initSystems() {
 	//pathFinding.optimiseNetwork();
 	int x = 0;
 	int j = sound.loadSound("trac1.wav");
-	sound.playSound(j);
-	sound.loopSound(j); 
+	//sound.playSound(j);
+	//sound.loopSound(j); 
 }
 
 void MainGame::initShaders() {

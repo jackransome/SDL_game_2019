@@ -11,6 +11,8 @@ public:
 	~Generator();
 	void init(glm::vec2 _position, GameEngine::SpriteBatch* _sb);
 	void draw();
+	float getPowerLevel();
+	void addPower(float _amount);
 	glm::vec2 getPosition();
 private:
 	float powerLevel;

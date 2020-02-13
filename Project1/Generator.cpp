@@ -31,6 +31,15 @@ void Generator::draw() {
 	}
 }
 
+float Generator::getPowerLevel()
+{
+	return powerLevel;
+}
+
+void Generator::addPower(float _amount){
+	powerLevel += _amount;
+}
+
 glm::vec2 Generator::getPosition() {
 	return glm::vec2(boundingBox.x, boundingBox.y);
 }
