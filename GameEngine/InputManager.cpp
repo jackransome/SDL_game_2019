@@ -12,13 +12,17 @@ namespace GameEngine {
 	}
 
 	void InputManager::pressKey(unsigned int keyID) {
-		// Here we are treating _keyMap as an associative array.
-		// if keyID doesn't already exist in _keyMap, it will get added
-		_keyMap[keyID] = true;
+		// Here we are treating keyMap as an associative array.
+		// if keyID doesn't already exist in keyMap, it will get added
+		keyMap[keyID] = true;
 	}
 
 	void InputManager::releaseKey(unsigned int keyID) {
-		_keyMap[keyID] = false;
+		keyMap[keyID] = false;
+	}
+
+	void InputManager::setOldKeyMap(){
+		oldKeyMap = keyMap;
 	}
 
 	void InputManager::setMouseCoords(float x, float y) {
@@ -37,8 +41,22 @@ namespace GameEngine {
 		// We dont want to use the associative array approach here
 		// because we don't want to create a key if it doesnt exist.
 		// So we do it manually
-		auto it = _keyMap.find(keyID);
-		if (it != _keyMap.end()) {
+		auto it = keyMap.find(keyID);
+		if (it != keyMap.end()) {
+			// Found the key
+			return it->second;
+		}
+		else {
+			// Didn't find the key
+			return false;
+		}
+	}
+	bool InputManager::wasKeyPressed(unsigned int keyID) {
+		// We dont want to use the associative array approach here
+		// because we don't want to create a key if it doesnt exist.
+		// So we do it manually
+		auto it = oldKeyMap.find(keyID);
+		if (it != oldKeyMap.end()) {
 			// Found the key
 			return it->second;
 		}

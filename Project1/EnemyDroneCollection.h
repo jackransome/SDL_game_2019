@@ -13,7 +13,7 @@ public:
 	~EnemyDroneCollection();
 	void init(GameEngine::SpriteBatch* _sb, ProjectileCollection* _projectiles, GameEngine::Camera2D *_cameraPointer);
 	void addEnemyDrone(glm::vec2 _position);
-	void update();
+	void run();
 	void draw();
 	BoundingBox* getBoundingBox(int _index);
 	void drawByIndex(int _index);

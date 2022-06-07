@@ -24,9 +24,11 @@ void Player::init(float _x, float _y, GameEngine::SpriteBatch* _sb, GameEngine::
 	mainSprite.init(sb, 16, 16, 1, 4, 16, 0, 0);
 	mainSprite.loadTexture("textures/player1.png");
 }
+
 BoundingBox* Player::getBoundingBox() {
 	return &boundingBox;
 }
+
 void Player::handleInput(GameEngine::InputManager* _im) {
 	camera->followObject(&boundingBox);
 	boundingBox.yv = boundingBox.xv = 0;
@@ -48,10 +50,10 @@ void Player::handleInput(GameEngine::InputManager* _im) {
 		boundingBox.yv *= sqrt(0.5);
 	}
 
-	if (_im->isKeyPressed(SDL_BUTTON_LEFT) && !_im->lastMouseL) {
+	if (_im->isKeyPressed(SDL_BUTTON_LEFT) && !_im->wasKeyPressed(SDL_BUTTON_LEFT)) {
 		projectiles->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 20, damageEnemy, damagePower);
 	}
-	if (_im->isKeyPressed(SDL_BUTTON_RIGHT)/* && !_im->lastMouseR*/) {
+	if (_im->isKeyPressed(SDL_BUTTON_RIGHT) && !_im->wasKeyPressed(SDL_BUTTON_RIGHT)) {
 		wallTurrets->launch(glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2), _im->getMouseCoords(), 10);
 	}
 
@@ -63,16 +65,13 @@ void Player::calcNewPos() {
 	boundingBox.x += boundingBox.xv;
 	boundingBox.y += boundingBox.yv;
 }
-float Player::getHealth()
-{
+float Player::getHealth() {
 	return health;
 }
-void Player::changeHealth(float _amount)
-{
+void Player::changeHealth(float _amount) {
 	health += _amount;
 }
-glm::vec2 Player::getCenter()
-{
+glm::vec2 Player::getCenter() {
 	return glm::vec2(boundingBox.x + boundingBox.w / 2, boundingBox.y + boundingBox.h / 2);
 }
 void Player::draw() {

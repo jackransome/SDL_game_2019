@@ -1,4 +1,5 @@
 #include "PathFinding.h"
+#include <stdio.h>
 
 void PathFinding::init(GameEngine::SpriteBatch * _sb)
 {
@@ -133,8 +134,22 @@ void PathFinding::fillNeighbors()
 		for (int j = 0; j < nodes[i]->numberOfNeighbors; j++) {
 			nodes[i]->distances[j] = sqrt(pow(nodes[i]->position.x - nodes[i]->neighbors[j]->position.x, 2) + pow(nodes[i]->position.y - nodes[i]->neighbors[j]->position.y, 2));
 		}
-		// Ordering neighbors/distance array based on distance from the node
-		
+		// Ordering neighbors/distance array based on distance from the node (bubble sort)
+		Node* tempNodePointer;
+		int tempDistance;
+		for (int j = 0; j < nodes[i]->numberOfNeighbors - 1; j++) {
+			for (int k = 0; k < nodes[i]->numberOfNeighbors - j - 1; k++) {
+				if (nodes[i]->distances[k] > nodes[i]->distances[k+1]) {
+					// swap neighbors k and k +1 in both distances and neighbors
+					tempDistance = nodes[i]->distances[k];
+					tempNodePointer = nodes[i]->neighbors[k];
+					nodes[i]->distances[k] = nodes[i]->distances[k+1];
+					nodes[i]->neighbors[k] = nodes[i]->neighbors[k+1];
+					nodes[i]->distances[k+1] = tempDistance;
+					nodes[i]->neighbors[k+1] = tempNodePointer;
+				}
+			}
+		}
 		// Emptying the vector:
 		nodes[i]->neighborsVector.clear();
 	}

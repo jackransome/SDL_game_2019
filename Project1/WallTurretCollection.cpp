@@ -37,7 +37,7 @@ void WallTurretCollection::launch(glm::vec2 _p1, glm::vec2 _p2, float _vel)
 	addWallTurret(_p1, glm::vec2(-xVel, -yVel));
 }
 
-void WallTurretCollection::update()
+void WallTurretCollection::run()
 {
 	for (int i = 0; i < wallTurretVector.size(); i++) {
 		wallTurretVector[i]->calcNewPos();
@@ -78,7 +78,7 @@ void WallTurretCollection::drawByIndex(int _index)
 	wallTurretVector[_index]->draw();
 }
 
-void WallTurretCollection::changeHealth(int _index, int _amount)
+void WallTurretCollection::changeHealth(int _index, float _amount)
 {
 	wallTurretVector[_index]->changeHealth(_amount);
 }
