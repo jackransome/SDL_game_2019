@@ -1,5 +1,6 @@
 #include "EnemyDrone.h"
 #include <GameEngine/CollisionDetection.h>
+#include <stdio.h>
 EnemyDrone::EnemyDrone()
 {
 }
@@ -102,6 +103,13 @@ void EnemyDrone::run()
 			boundingBox.y = path->position.y;
 			Path* oldNode = path;
 			path = path->next;
+			if (path == nullptr) {
+				pathSet = false;
+			}
+			else {
+				pathNext = path->next;
+			}
+			
 			//DELETE OLD PATH?
 		}
 		else {
@@ -165,6 +173,12 @@ void EnemyDrone::changeHealth(float _amount)
 void EnemyDrone::setPath(Path* _path)
 {
 	path = _path;
+	if (_path == nullptr || _path == NULL) {
+		while (true) {
+			int f = 3;
+		};
+	}
+	pathNext = path->next;
 	pathSet = true;
 }
 

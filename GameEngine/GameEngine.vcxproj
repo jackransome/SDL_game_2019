@@ -22,32 +22,32 @@
     <ProjectGuid>{83C47B5A-5447-45C4-A865-F6E0D35A2FC3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GameEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)\Libraries\SDL2-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)\Libraries\SDL2-2.0.4\lib\x86;C:\Users\Jack\Documents\GitHub\SDL_Sandbox\Libraries\SDL2_mixer-2.0.4\lib\x86;C:\Users\Jack\Documents\GitHub\SDL_Sandbox\Libraries\SDL2-2.0.10\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Libraries\glm;C:\Users\Jack\Documents\GitHub\SDL_Sandbox\Libraries\SDL2-2.0.10\include;C:\Users\Jack\Documents\GitHub\SDL_Sandbox\Libraries\glew-2.1.0\include;C:\Users\Jack\Documents\GitHub\SDL_Sandbox\Libraries\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\glew-1.13.0-win32\glew-1.13.0\lib\Release\Win32;C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\SDL2-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\glm;C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\SDL2-2.0.4\include;C:\Users\jack\Documents\Visual Studio 2015\Projects\SDLgame\glew-1.13.0-win32\glew-1.13.0\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.4\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\x64;$(SolutionDir)\Libraries\SDL2-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Libraries\SDL2_mixer-2.0.4\include;$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.10\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Libraries\SDL2_mixer-2.0.4\lib\x64;$(SolutionDir)\Libraries\glew-2.1.0\lib\Release\x64;$(SolutionDir)\Libraries\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)\Libraries\SDL2_mixer-2.0.4\include;$(SolutionDir)\Libraries\glm;$(SolutionDir)\Libraries\SDL2-2.0.10\include;C:\Users\Jack\Documents\GitHub\SDL_game_2019\Libraries\glew-2.1.0\include;$(IncludePath)</IncludePath>

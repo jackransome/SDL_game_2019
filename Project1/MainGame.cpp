@@ -153,10 +153,11 @@ void MainGame::initSystems() {
 	}
 	pathFinding.fillNeighbors();
 	//pathFinding.optimiseNetwork();
-	int x = 0;
 	int j = sound.loadSound("trac1.wav");
+	int k = sound.loadSound("shootSound.wav");
 	sound.playSound(j);
 	sound.loopSound(j); 
+	sound.playSound(k);
 }
 
 void MainGame::initShaders() {
@@ -311,7 +312,7 @@ void MainGame::updateGame() {
 				break;
 			}
 		}
-		//if isn't blocked and if within sensor range
+		//if isn't blocked and is within sensor range
 		if (!isBlocked && sqrt(pow(enemyDrones.getCenter(i).x - player.getCenter().x, 2) + pow(enemyDrones.getCenter(i).y - player.getCenter().y, 2)) < enemyDrones.getSensorRange(i)) {
 			enemyDrones.target(i, player.getBoundingBox());
 		}
@@ -341,8 +342,9 @@ void MainGame::updateGame() {
 			}
 			if (index != -1) {
 				Path* tempPath = pathFinding.getPath(index, closestNodeToPlayerIndex);
+				enemyDrones.setPath(i, tempPath);
 				//checking if the path to the second node is blocked:
-				while (tempPath->next) {
+				if (tempPath && tempPath->next) {
 					bool isBlocked = false;
 					for (int j = 0; j < walls.getVectorSize(); j++) {
 						if (collisionDetection.lineRectCollision(enemyDrones.getCenter(i), tempPath->next->position, walls.getBoundingBox(j))) {
@@ -351,20 +353,16 @@ void MainGame::updateGame() {
 						}
 					}
 					if (!isBlocked) {
-						tempPath = tempPath->next;
-					}
-					else {
-						break;
+						enemyDrones.setPath(i, tempPath->next);
 					}
 				}
-				enemyDrones.setPath(i, tempPath);
 			}
 		}
 		else if (enemyDrones.hasPath(i)) {
 			//fixing paths is the drone can see further ahead nodes (ONLY LOOKS ONE NODE AHEAD)
 			Path* tempPath = enemyDrones.getPath(i);
 			//checking if the path to the second node is blocked:
-			while (tempPath->next) {
+			if (tempPath && tempPath->next) {
 				bool isBlocked = false;
 				for (int j = 0; j < walls.getVectorSize(); j++) {
 					if (collisionDetection.lineRectCollision(enemyDrones.getCenter(i), tempPath->next->position, walls.getBoundingBox(j))) {
@@ -373,13 +371,10 @@ void MainGame::updateGame() {
 					}
 				}
 				if (!isBlocked) {
-					tempPath = tempPath->next;
-				}
-				else {
-					break;
+					enemyDrones.setPath(i, tempPath->next);
 				}
 			}
-			enemyDrones.setPath(i, tempPath);
+			
 		}
 
 	}
@@ -499,7 +494,7 @@ void MainGame::drawGame() {
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	spriteBatch.begin();
 
-	//pathFinding.draw();
+	pathFinding.draw();
 
 	// add all drawable objects to the drawObjectCollection vector
 	for (int i = 0; i < walls.getVectorSize(); i++) {

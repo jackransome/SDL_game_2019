@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include "GLTexture.h"
+#include <string>
 
 namespace GameEngine {
 

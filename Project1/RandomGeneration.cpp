@@ -70,44 +70,69 @@ void RandomGeneration::createRoom(float _x, float _y, float _width, float _heigh
 
 	//bottom
 	if (_bottomDoor) {
+		//left
 		walls->addWall(_x, _y, (_width - doorWidth) / 2, wallThickness);
+		//right
 		walls->addWall(_x + (_width + doorWidth) / 2, _y, (_width - doorWidth) / 2, wallThickness);
 		//hallway
-		walls->addWall(_x + (_width + doorWidth) / 2, _y - (cellSize - _height) / 2, wallThickness, (cellSize - _height) / 2);
+		//left
 		walls->addWall(_x + (_width - doorWidth) / 2 - wallThickness, _y - (cellSize - _height) / 2, wallThickness, (cellSize - _height) / 2);
+		//right
+		walls->addWall(_x + (_width + doorWidth) / 2, _y - (cellSize - _height) / 2, wallThickness, (cellSize - _height) / 2);
+		//entrance to hallway
+		pathFinding->addNode(glm::vec2(_x + _width / 2, _y + wallThickness*2));
 	}
 	else {
 		walls->addWall(_x, _y, _width, wallThickness);
 	}
 	//top
 	if (_topDoor) {
+		//left
 		walls->addWall(_x, _y + _height - wallThickness, (_width - doorWidth) / 2, wallThickness);
+		//right
 		walls->addWall(_x + (_width + doorWidth) / 2, _y + _height - wallThickness, (_width - doorWidth) / 2, wallThickness);
 		//hallway
-		walls->addWall(_x + (_width + doorWidth) / 2, _y + _height, wallThickness, (cellSize - _height) / 2);
+		//left
 		walls->addWall(_x + (_width - doorWidth) / 2 - wallThickness, _y + _height, wallThickness, (cellSize - _height) / 2);
+		//right
+		walls->addWall(_x + (_width + doorWidth) / 2, _y + _height, wallThickness, (cellSize - _height) / 2);
+		//entrance to hallway
+		pathFinding->addNode(glm::vec2(_x + _width / 2, _y + _height - wallThickness));
 	}
 	else {
-		walls->addWall(_x, _y + _height - wallThickness, _width, wallThickness);
+		walls->addWall(_x, _y + _height - wallThickness*2, _width, wallThickness);
 	}
 	//left
 	if (_leftDoor) {
+		//top
+		walls->addWall(_x, _y + (_height + doorWidth) / 2, wallThickness, (_height - doorWidth) / 2);
+		//bottom
 		walls->addWall(_x, _y, wallThickness, (_height - doorWidth)/2);
-		walls->addWall(_x, _y + (_height + doorWidth)/2, wallThickness, (_height - doorWidth) / 2);
 		//hallway
-		walls->addWall(_x - (cellSize - _width) / 2, _y + (_height - doorWidth) / 2 - wallThickness, (cellSize - _width) / 2, wallThickness);
+		//top
 		walls->addWall(_x - (cellSize - _width) / 2, _y + (_height + doorWidth) / 2, (cellSize - _width) / 2, wallThickness);
+		//bottom
+		walls->addWall(_x - (cellSize - _width) / 2, _y + (_height - doorWidth) / 2 - wallThickness, (cellSize - _width) / 2, wallThickness);
+		//entrance to hallway
+		pathFinding->addNode(glm::vec2(_x + wallThickness*2, _y + _height / 2));
 	}
 	else {
 		walls->addWall(_x, _y, wallThickness, _height);
 	}
 	//right
 	if (_rightDoor) {
-		walls->addWall(_x + _width - wallThickness, _y, wallThickness, (_height - doorWidth) / 2);
+		//top
 		walls->addWall(_x + _width - wallThickness, _y + (_height + doorWidth) / 2, wallThickness, (_height - doorWidth) / 2);
+		//bottom
+		walls->addWall(_x + _width - wallThickness, _y, wallThickness, (_height - doorWidth) / 2);
+		
 		//hallway
-		walls->addWall(_x + _width, _y + (_height - doorWidth) / 2 - wallThickness, (cellSize - _width) / 2, wallThickness);
+		//top
 		walls->addWall(_x + _width, _y + (_height + doorWidth) / 2, (cellSize - _width) / 2, wallThickness);
+		//bottom
+		walls->addWall(_x + _width, _y + (_height - doorWidth) / 2 - wallThickness, (cellSize - _width) / 2, wallThickness);
+		//entrance to hallway
+		pathFinding->addNode(glm::vec2(_x + _width - wallThickness, _y + _height / 2));
 	}
 	else {
 		walls->addWall(_x + _width - wallThickness, _y, wallThickness, _height);

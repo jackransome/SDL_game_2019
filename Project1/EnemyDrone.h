@@ -31,6 +31,7 @@ public:
 private:
 
 	Path* path;
+	Path* pathNext;
 	float damagePower;
 	int shootCoolDown;
 	void shootAt(BoundingBox _boundingBox);
